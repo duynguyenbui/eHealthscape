@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8F81FAA5-44E1-447E-98DB-64A887ABC8A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthRecord.API", "src\HealthRecord.API\HealthRecord.API.csproj", "{04EB40E7-3342-42F6-B384-CA1F227CA4BC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA23029A-06DC-4BA7-B99E-156D969BE770}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		.editorconfig = .editorconfig
+		.dockerignore = .dockerignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
+		README.md = README.md
+		nuget.config = nuget.config
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechRecognition.API", "src\SpeechRecognition.API\SpeechRecognition.API.csproj", "{591B6449-81AB-4734-B52A-06D86D82A43E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{04EB40E7-3342-42F6-B384-CA1F227CA4BC} = {8F81FAA5-44E1-447E-98DB-64A887ABC8A9}
+		{591B6449-81AB-4734-B52A-06D86D82A43E} = {8F81FAA5-44E1-447E-98DB-64A887ABC8A9}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{04EB40E7-3342-42F6-B384-CA1F227CA4BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04EB40E7-3342-42F6-B384-CA1F227CA4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04EB40E7-3342-42F6-B384-CA1F227CA4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04EB40E7-3342-42F6-B384-CA1F227CA4BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{591B6449-81AB-4734-B52A-06D86D82A43E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{591B6449-81AB-4734-B52A-06D86D82A43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{591B6449-81AB-4734-B52A-06D86D82A43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{591B6449-81AB-4734-B52A-06D86D82A43E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

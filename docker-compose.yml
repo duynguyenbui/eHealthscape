@@ -1,0 +1,6 @@
+﻿services:
+  healthrecord.api:
+    image: healthrecord.api
+    build:
+      context: .
+      dockerfile: src/HealthRecord.API/Dockerfile
