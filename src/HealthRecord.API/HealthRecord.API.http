@@ -1,0 +1,6 @@
+@HealthRecord.API_HostAddress = http://localhost:5002
+@ApiVersion = 1.0
+
+GET {{HealthRecord.API_HostAddress}}/api/healthrecord?api-version={{ApiVersion}}
+
+###

@@ -1,9 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddApplicationServices();
+var withApiVersioning = builder.Services.AddApiVersioning();
+
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
-
-// Write an api route return fake health record
-app.MapGet("/api/healthrecord", () => new { Status = "Healthy" });
+app.NewVersionedApi("HealthRecord").MapHealthRecordV1();
 
 app.Run();
