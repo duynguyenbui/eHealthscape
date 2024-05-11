@@ -8,7 +8,7 @@ using eHealthscape.HealthRecord.API.Infrastructure;
 
 #nullable disable
 
-namespace eHealthscape.HealthRecord.API.Migrations
+namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
 {
     [DbContext(typeof(HealthRecordContext))]
     partial class HealthRecordContextModelSnapshot : ModelSnapshot
@@ -17,18 +17,16 @@ namespace eHealthscape.HealthRecord.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("eHealthscape.HealthRecord.API.Model.CareSheet", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("CareInstruction")
                         .IsRequired()
@@ -56,11 +54,9 @@ namespace eHealthscape.HealthRecord.API.Migrations
 
             modelBuilder.Entity("eHealthscape.HealthRecord.API.Model.Examination", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("DoctorId")
                         .HasColumnType("uuid");
@@ -155,11 +151,9 @@ namespace eHealthscape.HealthRecord.API.Migrations
 
             modelBuilder.Entity("eHealthscape.HealthRecord.API.Model.VitalSign", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("BloodPressure")
                         .HasColumnType("numeric");

@@ -11,5 +11,3 @@ app.NewVersionedApi("HealthRecord").MapHealthRecordV1();
 app.UseDefaultOpenApi();
 
 app.Run();
-
-public partial class Program;

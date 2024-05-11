@@ -3,7 +3,7 @@ namespace eHealthscape.HealthRecord.API.Infrastructure;
 /// <remarks>
 /// Add migrations using the following command inside the 'Catalog.API' project directory:
 ///
-/// dotnet ef migrations add --context CatalogContext [migration-name]
+/// dotnet ef migrations add --context HealthRecordContext [migration-name]
 /// </remarks>
 public class HealthRecordContext : DbContext
 {

@@ -2,7 +2,7 @@ namespace eHealthscape.HealthRecord.API.Model;
 
 public class CareSheet
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public int NurseId { get; set; }
     public DateTime IssueAt { get; set; } = DateTime.Now;
     public string ProgressNote { get; set; } = default!;

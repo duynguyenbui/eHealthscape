@@ -6,13 +6,13 @@ public class HealthRecordApiFixture : WebApplicationFactory<Program>, IAsyncLife
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureServices(async services =>
+        builder.ConfigureServices(services =>
         {
             var dbContextDescriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
                      typeof(DbContextOptions<HealthRecordContext>));
 
-            services.Remove(dbContextDescriptor);
+            services.Remove(dbContextDescriptor!);
 
             services.AddDbContext<HealthRecordContext>(optionsBuilder =>
             {

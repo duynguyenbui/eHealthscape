@@ -1,16 +1,6 @@
 ﻿version: '3.4'
 
 services:
-#  health-record.api:
-#    image: healthrecord.api
-#    build:
-#      context: .
-#      dockerfile: src/HealthRecord.API/Dockerfile
-#  speech-recognition.api:
-#    image: speechrecognition.api
-#    build:
-#      context: .
-#      dockerfile: src/SpeechRecognition.API/Dockerfile
   postgres.db:
     image: postgres
     ports:

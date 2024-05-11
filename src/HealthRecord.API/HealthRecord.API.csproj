@@ -6,12 +6,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="Asp.Versioning.Http" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
         <PrivateAssets>all</PrivateAssets>
@@ -22,6 +16,12 @@
 
     <ItemGroup>
       <ProjectReference Include="..\eHealthscape.ServiceDefaults\eHealthscape.ServiceDefaults.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

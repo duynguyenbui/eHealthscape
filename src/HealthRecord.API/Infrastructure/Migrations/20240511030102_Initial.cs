@@ -1,10 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace eHealthscape.HealthRecord.API.Migrations
+namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -54,8 +53,7 @@ namespace eHealthscape.HealthRecord.API.Migrations
                 name: "CarSheet",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NurseId = table.Column<int>(type: "integer", nullable: false),
                     IssueAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ProgressNote = table.Column<string>(type: "text", nullable: false),
@@ -77,8 +75,7 @@ namespace eHealthscape.HealthRecord.API.Migrations
                 name: "Examination",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DoctorId = table.Column<Guid>(type: "uuid", nullable: false),
                     IssueAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ProgressNote = table.Column<string>(type: "text", nullable: false),
@@ -101,8 +98,7 @@ namespace eHealthscape.HealthRecord.API.Migrations
                 name: "VitalSign",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Pulse = table.Column<int>(type: "integer", nullable: false),
                     BloodPressure = table.Column<decimal>(type: "numeric", nullable: false),
                     Temperature = table.Column<float>(type: "real", nullable: false),

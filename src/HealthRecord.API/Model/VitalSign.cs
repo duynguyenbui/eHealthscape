@@ -2,7 +2,7 @@ namespace eHealthscape.HealthRecord.API.Model;
 
 public class VitalSign
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public int Pulse { get; set; }
     public decimal BloodPressure { get; set; }
     public float Temperature { get; set; }

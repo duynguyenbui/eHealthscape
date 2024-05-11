@@ -2,7 +2,7 @@ namespace eHealthscape.HealthRecord.API.Model;
 
 public class Examination
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public Guid DoctorId { get; set; }
     public DateTime IssueAt { get; set; }
     public string ProgressNote { get; set; } = default!;
