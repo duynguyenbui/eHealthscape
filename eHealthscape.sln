@@ -19,6 +19,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechRecognition.API", "src\SpeechRecognition.API\SpeechRecognition.API.csproj", "{591B6449-81AB-4734-B52A-06D86D82A43E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eHealthscape.ServiceDefaults", "src\eHealthscape.ServiceDefaults\eHealthscape.ServiceDefaults.csproj", "{D90E3A24-5251-4CD7-B281-C9260E1E1AC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D01717FE-9415-426E-B301-ADB3567BACD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthRecord.FunctionalTests", "tests\HealthRecord.FunctionalTests\HealthRecord.FunctionalTests.csproj", "{A0C10041-B53E-4C6B-8166-CE847154125A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +33,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{04EB40E7-3342-42F6-B384-CA1F227CA4BC} = {8F81FAA5-44E1-447E-98DB-64A887ABC8A9}
 		{591B6449-81AB-4734-B52A-06D86D82A43E} = {8F81FAA5-44E1-447E-98DB-64A887ABC8A9}
+		{D90E3A24-5251-4CD7-B281-C9260E1E1AC2} = {8F81FAA5-44E1-447E-98DB-64A887ABC8A9}
+
+		{A0C10041-B53E-4C6B-8166-CE847154125A} = {D01717FE-9415-426E-B301-ADB3567BACD9}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{04EB40E7-3342-42F6-B384-CA1F227CA4BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -37,5 +46,13 @@ Global
 		{591B6449-81AB-4734-B52A-06D86D82A43E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591B6449-81AB-4734-B52A-06D86D82A43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591B6449-81AB-4734-B52A-06D86D82A43E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D90E3A24-5251-4CD7-B281-C9260E1E1AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D90E3A24-5251-4CD7-B281-C9260E1E1AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D90E3A24-5251-4CD7-B281-C9260E1E1AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D90E3A24-5251-4CD7-B281-C9260E1E1AC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C10041-B53E-4C6B-8166-CE847154125A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C10041-B53E-4C6B-8166-CE847154125A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0C10041-B53E-4C6B-8166-CE847154125A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0C10041-B53E-4C6B-8166-CE847154125A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

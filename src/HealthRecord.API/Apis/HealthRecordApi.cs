@@ -6,7 +6,7 @@ public static class HealthRecordApi
     public static IEndpointRouteBuilder MapHealthRecordV1(this IEndpointRouteBuilder app)
     {
         var api = app.MapGroup("api/healthrecord").HasApiVersion(1.0);
-
+        
         api.MapGet("/",  ([AsParameters] HealthRecordServices services) =>
         {
             services.Logger.LogInformation("Called API route 'api/healthrecord'");
