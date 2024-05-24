@@ -9,3 +9,5 @@ global using eHealthscape.HealthRecord.API.Services;
 global using eHealthscape.HealthRecord.API.Model;
 global using eHealthscape.HealthRecord.API.Infrastructure;
 global using eHealthscape.HealthRecord.API.Infrastructure.EntityConfigurations;
+
+global using OpenTelemetry.Metrics;

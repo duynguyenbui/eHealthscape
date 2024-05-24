@@ -96,7 +96,7 @@ public class SeedData
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             context.Database.Migrate();
 
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            RoleManager<IdentityRole?> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var doctor = roleManager.FindByNameAsync("Doctor").Result;
             if (doctor == null)
             {
@@ -152,11 +152,16 @@ public class SeedData
             var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             
             var bob = userMgr.FindByNameAsync("bob").Result;
-            await userMgr.AddToRoleAsync(bob, "Nurse");
-            
-            var alice = userMgr.FindByNameAsync("alice").Result;
-            await userMgr.AddToRoleAsync(alice, "Doctor");
+            if (bob != null)
+            {
+                await userMgr.AddToRoleAsync(bob, "Nurse");
+            }
 
+            var alice = userMgr.FindByNameAsync("alice").Result;
+            if (alice != null)
+            {
+                await userMgr.AddToRoleAsync(alice, "Doctor");
+            }
         }
     }
 }

@@ -36,9 +36,12 @@ internal static class MigrateDbContextExtensions
         {
             logger.LogInformation("Migrating database associated with context {DbContextName}", typeof(TContext).Name);
 
-            var strategy = context.Database.CreateExecutionStrategy();
+            if (context != null)
+            {
+                var strategy = context.Database.CreateExecutionStrategy();
 
-            await strategy.ExecuteAsync(() => InvokeSeeder(seeder, context, scopeServices));
+                await strategy.ExecuteAsync(() => InvokeSeeder(seeder, context, scopeServices));
+            }
         }
         catch (Exception ex)
         {
@@ -52,15 +55,8 @@ internal static class MigrateDbContextExtensions
         IServiceProvider services)
         where TContext : DbContext
     {
-        try
-        {
-            await context.Database.MigrateAsync();
-            await seeder(context, services);
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
+        await context.Database.MigrateAsync();
+        await seeder(context, services);
     }
 
     private class MigrationHostedService<TContext>(

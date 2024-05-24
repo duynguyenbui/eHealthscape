@@ -1,6 +1,4 @@
-﻿version: '3.4'
-
-services:
+﻿services:
   postgres.db:
     image: ankane/pgvector:latest
     ports:
@@ -8,3 +6,24 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgrespw
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./src/prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - "9090:9090"
+  grafana:
+    image: grafana/grafana
+    user: "472"
+    depends_on:
+      - prometheus
+    volumes:
+      - ./src/grafana/config:/etc/grafana
+      - ./src/grafana/dashboards/:/var/lib/grafana/dashboards
+    ports:
+      - "4444:3000"

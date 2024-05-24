@@ -8,9 +8,9 @@ builder.AddDefaultOpenApi(withApiVersioning);
 
 var app = builder.Build();
 
-app.NewVersionedApi("HealthRecord").MapHealthRecordV1()
-    .RequireAuthorization();
+app.NewVersionedApi("HealthRecord").MapHealthRecordV1().RequireAuthorization();
 
+app.MapPrometheusScrapingEndpoint();
 app.MapDefaultEndpoints();
 app.UseDefaultOpenApi();
 

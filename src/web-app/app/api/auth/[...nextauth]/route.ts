@@ -2,6 +2,10 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import DuendeIdentityServer6 from "next-auth/providers/duende-identity-server6";
 
 export const authOptions: NextAuthOptions = {
+  pages: {
+    signIn: "/",
+    signOut: "/",
+  },
   session: {
     strategy: "jwt",
   },
@@ -16,13 +20,14 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token }) {
-      console.log("Token:::", token);
-      return token;
-    },
-    async session({ session, token }) {
-      console.log("Session:::", session);
+    async session({ session }) {
       return session;
+    },
+    async jwt({ token, account }) {
+      if (account) {
+        token.access_token = account.access_token;
+      }
+      return token;
     },
   },
 };

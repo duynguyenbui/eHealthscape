@@ -7,6 +7,8 @@ using Identity.API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using OpenTelemetry.Metrics;
+
 using Serilog;
 
 namespace Identity.API;
@@ -24,7 +26,7 @@ internal static class HostingExtensions
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        builder.Services.AddMigration<ApplicationDbContext>();
+        builder.Services.AddMigration<ApplicationDbContext, ApplicationDbContextSeed>();
 
         builder.Services
             .AddIdentityServer(options =>
@@ -42,7 +44,7 @@ internal static class HostingExtensions
             .AddInMemoryClients(Config.Clients(builder.Configuration))
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<ProfileService>();
-        
+
         builder.Services.AddAuthentication()
             .AddGoogle(options =>
             {
@@ -54,6 +56,19 @@ internal static class HostingExtensions
                 options.ClientId = "copy client ID from Google here";
                 options.ClientSecret = "copy client secret from Google here";
             });
+
+        // Metrics
+        // builder.Services.AddOpenTelemetry()
+        //     .WithMetrics(providerBuilder =>
+        //     {
+        //         providerBuilder.AddPrometheusExporter();
+        //         providerBuilder.AddMeter("Microsoft.AspNetCore.Hosting", "Microsoft.AspNetCore.Server.Kestrel");
+        //         providerBuilder.AddView("http.server.request.duration",
+        //             new ExplicitBucketHistogramConfiguration
+        //             {
+        //                 Boundaries = [0, 0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10]
+        //             });
+        //     });
 
         return builder.Build();
     }
@@ -72,6 +87,7 @@ internal static class HostingExtensions
         app.UseIdentityServer();
         app.UseAuthorization();
 
+        // app.MapPrometheusScrapingEndpoint();
         app.MapRazorPages()
             .RequireAuthorization();
 

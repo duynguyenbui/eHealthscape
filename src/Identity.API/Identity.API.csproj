@@ -20,4 +20,9 @@
     <ItemGroup>
         <Compile Include="..\Shared\MigrateDbContextExtensions.cs" Link="Extensions\MigrateDbContextExtensions.cs"/>
     </ItemGroup>
+
+    <!--    <ItemGroup>-->
+    <!--      <PackageVersion Update="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.9.0-alpha.1" />-->
+    <!--      <PackageVersion Update="OpenTelemetry.Extensions.Hosting" Version="1.9.0-alpha.1" />-->
+    <!--    </ItemGroup>-->
 </Project>

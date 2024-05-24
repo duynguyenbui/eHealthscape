@@ -46,6 +46,7 @@ public static class Config
                 ClientName = "WebApp",
                 ClientSecrets = { new Secret("secret".Sha256()) },
                 AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                AllowAccessTokensViaBrowser = false,
                 RequirePkce = false,
                 RedirectUris = { configuration["WebAppClient"] + "/api/auth/callback/id-server" },
                 AllowOfflineAccess = true,
@@ -56,7 +57,9 @@ public static class Config
                     "healthrecords"
                 },
                 AccessTokenLifetime = 3600 * 24 * 30, // 30 days
-                AlwaysIncludeUserClaimsInIdToken = true
+                IdentityTokenLifetime = 3600 * 24 * 30, // 30 days
+                AlwaysIncludeUserClaimsInIdToken = true,
+                AccessTokenType = AccessTokenType.Jwt
             }
         };
 }

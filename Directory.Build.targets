@@ -4,6 +4,6 @@
     </PropertyGroup>
     <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
     <Target Name="CustomAfterBuildTarget" AfterTargets="Build">
-        <Message Text="Hello from CustomAfterBuildTarget from Duy Nguyen BUI" Importance="high"/>
+        <Message Text="Hello from Duy Nguyen BUI, I can build everything I want but currently, I am a poor guy, so I need a huge amount of money" Importance="high"/>
     </Target>
 </Project>

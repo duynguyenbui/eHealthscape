@@ -20,6 +20,8 @@ public class ProfileService(UserManager<ApplicationUser> userMgr) : IProfileServ
         {
             var roles = await userMgr.GetRolesAsync(user);
             context.IssuedClaims.Add(new Claim(JwtClaimTypes.Role, roles.First()));
+            context.IssuedClaims.Add(new Claim(JwtClaimTypes.Name, user.UserName ?? string.Empty));
+            context.IssuedClaims.Add(new Claim(JwtClaimTypes.Email, user.Email ?? string.Empty));
         }
     }
 
