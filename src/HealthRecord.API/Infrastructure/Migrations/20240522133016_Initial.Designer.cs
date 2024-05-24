@@ -12,7 +12,7 @@ using eHealthscape.HealthRecord.API.Infrastructure;
 namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
 {
     [DbContext(typeof(HealthRecordContext))]
-    [Migration("20240511030102_Initial")]
+    [Migration("20240522133016_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.2")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -38,8 +38,8 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
                     b.Property<DateTime>("IssueAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("NurseId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("NurseId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("PatientRecordId")
                         .HasColumnType("uuid");
@@ -167,6 +167,9 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
                     b.Property<DateTime>("MeasureAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("NurseId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("PatientRecordId")
                         .HasColumnType("uuid");
 
@@ -195,7 +198,7 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
             modelBuilder.Entity("eHealthscape.HealthRecord.API.Model.CareSheet", b =>
                 {
                     b.HasOne("eHealthscape.HealthRecord.API.Model.PatientRecord", "PatientRecord")
-                        .WithMany()
+                        .WithMany("CareSheets")
                         .HasForeignKey("PatientRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -206,7 +209,7 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
             modelBuilder.Entity("eHealthscape.HealthRecord.API.Model.Examination", b =>
                 {
                     b.HasOne("eHealthscape.HealthRecord.API.Model.PatientRecord", "PatientRecord")
-                        .WithMany()
+                        .WithMany("Examinations")
                         .HasForeignKey("PatientRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -226,12 +229,21 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
             modelBuilder.Entity("eHealthscape.HealthRecord.API.Model.VitalSign", b =>
                 {
                     b.HasOne("eHealthscape.HealthRecord.API.Model.PatientRecord", "PatientRecord")
-                        .WithMany()
+                        .WithMany("VitalSigns")
                         .HasForeignKey("PatientRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PatientRecord");
+                });
+
+            modelBuilder.Entity("eHealthscape.HealthRecord.API.Model.PatientRecord", b =>
+                {
+                    b.Navigation("CareSheets");
+
+                    b.Navigation("Examinations");
+
+                    b.Navigation("VitalSigns");
                 });
 #pragma warning restore 612, 618
         }

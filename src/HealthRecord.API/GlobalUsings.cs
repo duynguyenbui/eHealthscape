@@ -1,5 +1,7 @@
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Microsoft.AspNetCore.Http.HttpResults;
+global using Microsoft.AspNetCore.Mvc;
 
 global using eHealthscape.ServiceDefaults;
 global using eHealthscape.HealthRecord.API.Apis;

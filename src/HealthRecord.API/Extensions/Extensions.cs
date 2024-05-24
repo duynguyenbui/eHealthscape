@@ -9,6 +9,11 @@ public static class Extensions
     public static void AddApplicationServices(this IHostApplicationBuilder builder)
     {
         builder.Services.AddDbContext<HealthRecordContext>(opts =>
-            opts.UseNpgsql(builder.Configuration.GetConnectionString("HealthRecordDb")));
+            opts.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+
+        // REVIEW: This is done for development ease but shouldn't be here in production
+        builder.Services.AddMigration<HealthRecordContext, HealthRecordSeed>();
+
+        builder.AddDefaultAuthentication();
     }
 }

@@ -2,7 +2,7 @@
 
 services:
   postgres.db:
-    image: postgres
+    image: ankane/pgvector:latest
     ports:
       - "5432:5432"
     environment:

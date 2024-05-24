@@ -1,10 +1,8 @@
-using System.Text.Json;
-
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OpenApi.Models;
-
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Text.Json;
 
 namespace eHealthscape.ServiceDefaults;
 
@@ -24,7 +22,7 @@ internal sealed class OpenApiDefaultValues : IOperationFilter
 
             foreach (var contentType in response.Content.Keys)
             {
-                if (responseType.ApiResponseFormats.All(x => x.MediaType != contentType))
+                if (!responseType.ApiResponseFormats.Any(x => x.MediaType == contentType))
                 {
                     response.Content.Remove(contentType);
                 }

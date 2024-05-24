@@ -6,22 +6,26 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Asp.Versioning.Http" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <PackageReference Include="Asp.Versioning.Http"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\eHealthscape.ServiceDefaults\eHealthscape.ServiceDefaults.csproj" />
+        <ProjectReference Include="..\eHealthscape.ServiceDefaults\eHealthscape.ServiceDefaults.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Compile Include="..\Shared\MigrateDbContextExtensions.cs" Link="Extensions\MigrateDbContextExtensions.cs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
 </Project>

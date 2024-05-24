@@ -54,7 +54,7 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    NurseId = table.Column<int>(type: "integer", nullable: false),
+                    NurseId = table.Column<Guid>(type: "uuid", nullable: false),
                     IssueAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ProgressNote = table.Column<string>(type: "text", nullable: false),
                     CareInstruction = table.Column<string>(type: "text", nullable: false),
@@ -107,6 +107,7 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
                     Height = table.Column<float>(type: "real", nullable: false),
                     Weight = table.Column<float>(type: "real", nullable: false),
                     MeasureAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    NurseId = table.Column<Guid>(type: "uuid", nullable: false),
                     PatientRecordId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

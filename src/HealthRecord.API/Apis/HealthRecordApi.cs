@@ -1,15 +1,13 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace eHealthscape.HealthRecord.API.Apis;
 
 public static class HealthRecordApi
 {
     // Maps the Health Record V1 endpoint route. Handles the GET request for the Health Record API V1.0 and logs the activity.
-    public static void MapHealthRecordV1(this IEndpointRouteBuilder app)
+    public static RouteGroupBuilder MapHealthRecordV1(this IEndpointRouteBuilder app)
     {
-        var api = app.MapGroup("api/healthrecord").HasApiVersion(1.0);
+        var api = app.MapGroup("api").HasApiVersion(1.0);
 
-        // Creating patient
+        // Modifying patients
         api.MapPost("/patients", CreatePatient);
         api.MapPut("/patients", UpdatePatient);
         api.MapDelete("/patients/{patientId:Guid}", DeletePatient);
@@ -23,16 +21,228 @@ public static class HealthRecordApi
                 await context.Patients.Select(p => p.BloodType).Distinct().ToListAsync());
 
         // Querying patient records
+        api.MapGet("/healthrecords/all", GetHealthRecords);
+        api.MapGet("/healthrecords/{healthrecordId:Guid}", GetHealthRecordById);
+        api.MapGet("/healthrecords/related/to/patient/{patientId:Guid}", GetHealthRecordsByPatientId);
+
+        // Querying Vital Signs
+        api.MapGet("/healthrecords/vitalsigns/{patientRecordId:Guid}", GetVitalSignByPatientRecordId);
+
+        // Querying examination records
+        api.MapGet("/healthrecords/examinations/related/to/{patientRecordId:Guid}", GetExaminationByPatientRecordId);
+        api.MapGet("/healthrecords/examinations/{examinationId:Guid}",
+            ([AsParameters] HealthRecordServices services, Guid examinationId) =>
+            {
+                return services.Context.Examinations.SingleOrDefaultAsync(ex => ex.Id == examinationId);
+            });
+
+        // Querying care sheets
+        api.MapGet("/healthrecords/caresheets/related/to/{patientRecordId:Guid}", GetCareSheetsByPatientRecordId);
+        api.MapGet("/healthrecords/caresheets/{caresheetId:Guid}",
+            ([AsParameters] HealthRecordServices services, Guid caresheetId) =>
+            {
+                return services.Context.CareSheets.SingleOrDefaultAsync(ex => ex.Id == caresheetId);
+            });
 
         // Modifying patient records
+        api.MapPost("/healthrecords/{patientId:guid}", CreatePatientRecord);
+        api.MapPost("/healthrecords/vitalsigns", CreateVitalSign);
+        api.MapPost("/healthrecords/examinations", CreateExamination);
+        api.MapPost("/healthrecords/caresheets", CreateCareSheet);
 
         // Check info
         api.MapGet("/", HealthRecordInfo);
+
+        return api;
+    }
+
+    public static async Task<Ok<PaginatedItems<CareSheet>>> GetCareSheetsByPatientRecordId(
+        [AsParameters] HealthRecordServices services, [AsParameters] PaginationRequest request, Guid patientRecordId)
+    {
+        var pageIndex = request.PageIndex;
+        var pageSize = request.PageSize;
+
+        var total = await services.Context.CareSheets.Where(cs => cs.PatientRecordId == patientRecordId)
+            .LongCountAsync();
+
+        var caresheets = await services.Context.CareSheets.Where(cs => cs.PatientRecordId == patientRecordId)
+            .ToListAsync();
+
+        return TypedResults.Ok(new PaginatedItems<CareSheet>(pageIndex, pageSize, total, caresheets));
+    }
+
+    public static async Task<Ok<PaginatedItems<Examination>>> GetExaminationByPatientRecordId(
+        [AsParameters] HealthRecordServices services, [AsParameters] PaginationRequest request, Guid patientRecordId)
+    {
+        var pageIndex = request.PageIndex;
+        var pageSize = request.PageSize;
+
+        var total = await services.Context.Examinations.Where(ex => ex.PatientRecordId == patientRecordId)
+            .LongCountAsync();
+
+        var examinations = await services.Context.Examinations.Where(ex => ex.PatientRecordId == patientRecordId)
+            .ToListAsync();
+
+        return TypedResults.Ok(new PaginatedItems<Examination>(pageIndex, pageSize, total, examinations));
+    }
+
+    private static async Task<Results<Created, NotFound>> CreateCareSheet(
+        [AsParameters] HealthRecordServices services, [FromBody] CreateCareSheet create)
+    {
+        var patientRecord = await services.Context.PatientRecords.FindAsync(create.PatientRecordId);
+
+        if (patientRecord == null) return TypedResults.NotFound();
+
+        var caresheet = new CareSheet
+        {
+            ProgressNote = create.ProgressNote,
+            CareInstruction = create.CareInstruction,
+            PatientRecordId = create.PatientRecordId,
+            PatientRecord = patientRecord,
+            NurseId = create.NurseId, //  TODO: Get from claim
+        };
+
+        var entry = await services.Context.CareSheets.AddAsync(caresheet);
+        await services.Context.SaveChangesAsync();
+
+        return TypedResults.Created($"/api/healthrecords/caresheets/{entry.Entity.Id}");
+    }
+
+    public static async Task<Results<Created, NotFound>> CreateExamination([AsParameters] HealthRecordServices services,
+        [FromBody] CreateExamination create)
+    {
+        var patientRecord = await services.Context.PatientRecords.FindAsync(create.PatientRecordId);
+
+        if (patientRecord == null) return TypedResults.NotFound();
+
+        var examination = new Examination
+        {
+            ProgressNote = create.ProgressNote,
+            MedicalServices = create.MedicalServices,
+            Prescription = create.Prescription,
+            PatientRecordId = create.PatientRecordId,
+            DoctorId = create.DoctorId, //  TODO: Get from claim
+            PatientRecord = patientRecord
+        };
+
+        var entry = await services.Context.Examinations.AddAsync(examination);
+        await services.Context.SaveChangesAsync();
+
+        return TypedResults.Created($"/api/healthrecords/examinations/{entry.Entity.Id}");
+    }
+
+    public static async Task<Ok<PaginatedItems<VitalSign>>> GetVitalSignByPatientRecordId(
+        [AsParameters] HealthRecordServices services, [AsParameters] PaginationRequest request, Guid patientRecordId)
+    {
+        var pageIndex = request.PageIndex;
+        var pageSize = request.PageSize;
+
+        var total = await services.Context.VitalSigns.Where(vs => vs.PatientRecordId == patientRecordId)
+            .LongCountAsync();
+
+        var vitalSigns = await services.Context.VitalSigns
+            .Where(vs => vs.PatientRecordId == patientRecordId)
+            .ToListAsync();
+
+        return TypedResults.Ok(new PaginatedItems<VitalSign>(pageIndex, pageSize, total, vitalSigns));
     }
 
 
+    public static async Task<Results<Created, NotFound>> CreateVitalSign([AsParameters] HealthRecordServices services,
+        [FromBody] CreateVitalSign create)
+    {
+        var patientRecord = await services.Context.PatientRecords.FindAsync(create.PatientRecordId);
+
+        if (patientRecord == null) return TypedResults.NotFound();
+
+        var vitalSign = new VitalSign
+        {
+            Pulse = create.Pulse,
+            BloodPressure = create.BloodPressure,
+            Temperature = create.Temperature,
+            Spo2 = create.Spo2,
+            RespirationRate = create.RespirationRate,
+            Height = create.Height,
+            Weight = create.Weight,
+            MeasureAt = create.MeasureAt,
+            NurseId = create.NurseId, //  TODO: Get from claim
+            PatientRecordId = create.PatientRecordId,
+            PatientRecord = patientRecord
+        };
+
+        var vitalSignEntry = await services.Context.VitalSigns.AddAsync(vitalSign);
+        await services.Context.SaveChangesAsync();
+
+        return TypedResults.Created($"/healthrecords/vitalsigns/{vitalSignEntry.Entity.PatientRecordId}");
+    }
+
+    public static async Task<Results<Ok<PatientRecord>, NotFound>> GetHealthRecordsByPatientId(
+        [AsParameters] HealthRecordServices services, Guid patientId)
+    {
+        var patientRecord = await services.Context.PatientRecords
+            .Include(pr => pr.Examinations)
+            .Include(pr => pr.CareSheets)
+            .Include(pr => pr.VitalSigns)
+            .Include(pr => pr.Patient)
+            .FirstOrDefaultAsync(pr => pr.PatientId == patientId);
+
+        if (patientRecord is not null) return TypedResults.Ok(patientRecord);
+
+        return TypedResults.NotFound();
+    }
+
+    public static async Task<Results<Ok<PatientRecord>, NotFound>> GetHealthRecordById(
+        [AsParameters] HealthRecordServices services, Guid healthrecordId)
+    {
+        var item = await services.Context.PatientRecords
+            .Include(pr => pr.Examinations)
+            .Include(pr => pr.CareSheets)
+            .Include(pr => pr.VitalSigns)
+            .Include(pr => pr.Patient)
+            .FirstOrDefaultAsync(pr => pr.Id == healthrecordId);
+
+        if (item is not null) return TypedResults.Ok(item);
+
+        return TypedResults.NotFound();
+    }
+
+    public static async Task<Ok<PaginatedItems<PatientRecord>>> GetHealthRecords(
+        [AsParameters] HealthRecordServices services, [AsParameters] PaginationRequest paginationRequest)
+    {
+        var pageSize = paginationRequest.PageSize;
+        var pageIndex = paginationRequest.PageIndex;
+
+        var total = await services.Context.PatientRecords.LongCountAsync();
+
+        var items = await services.Context.PatientRecords
+            .Include(pr => pr.Patient)
+            .Distinct()
+            .ToListAsync();
+
+        return TypedResults.Ok(new PaginatedItems<PatientRecord>(pageIndex, pageSize, total, items));
+    }
+
+    // Modifying patient records api routes
+
+    public static async Task<Results<Created, NotFound<string>>> CreatePatientRecord(
+        [AsParameters] HealthRecordServices services, Guid patientId)
+    {
+        // TODO: Nurse Id from Identity Server
+
+        var patient = await services.Context.Patients.FindAsync(patientId);
+
+        if (patient is null) return TypedResults.NotFound("Cannot find patient");
+
+        var patientRecord = new PatientRecord { NurseId = Guid.NewGuid(), PatientId = patientId, Patient = patient };
+
+        var patientEntry = await services.Context.PatientRecords.AddAsync(patientRecord);
+        await services.Context.SaveChangesAsync();
+
+        return TypedResults.Created($"/api/healthrecords/{patientEntry.Entity.Id}");
+    }
+
     // Querying patient api routes
-    private static async Task<Ok<PaginatedItems<Patient>>> GetPatients(
+    public static async Task<Ok<PaginatedItems<Patient>>> GetPatients(
         [AsParameters] PaginationRequest paginationRequest, [AsParameters] HealthRecordServices services)
     {
         var pageSize = paginationRequest.PageSize;
@@ -51,7 +261,7 @@ public static class HealthRecordApi
         return TypedResults.Ok(new PaginatedItems<Patient>(pageIndex, pageSize, totalItems, itemsOnPage));
     }
 
-    private static async Task<Ok<PaginatedItems<Patient>>> GetPatientsByBloodType(
+    public static async Task<Ok<PaginatedItems<Patient>>> GetPatientsByBloodType(
         [AsParameters] PaginationRequest paginationRequest,
         [AsParameters] HealthRecordServices services,
         string? bloodType)
@@ -77,7 +287,7 @@ public static class HealthRecordApi
         return TypedResults.Ok(new PaginatedItems<Patient>(pageIndex, pageSize, totalItems, itemsOnPage));
     }
 
-    private static async Task<Results<Ok<Patient>, BadRequest<string>, NotFound>> GetPatientById(
+    public static async Task<Results<Ok<Patient>, BadRequest<string>, NotFound>> GetPatientById(
         [AsParameters] HealthRecordServices services, Guid patientId)
     {
         services.Logger.LogInformation($"Info:::Called API route api/healthrecord/patient/{patientId.ToString()}");
@@ -98,28 +308,27 @@ public static class HealthRecordApi
 
 
     // Modifying patient api routes
-    private static async Task<Created> CreatePatient([AsParameters] HealthRecordServices services, Patient created)
+    public static async Task<Created> CreatePatient([AsParameters] HealthRecordServices services, CreatePatient create)
     {
         services.Logger.LogInformation("Info:::Called API route 'api/healthrecord/patient'");
         var patient = new Patient()
         {
-            Id = Guid.NewGuid(),
-            FirstName = created.FirstName,
-            LastName = created.LastName,
-            DateOfBirth = created.DateOfBirth,
-            Gender = created.Gender,
-            Address = created.Address,
-            PhoneNumber = created.PhoneNumber,
-            BloodType = created.BloodType
+            FirstName = create.FirstName,
+            LastName = create.LastName,
+            DateOfBirth = create.DateOfBirth,
+            Gender = create.Gender,
+            Address = create.Address,
+            PhoneNumber = create.PhoneNumber,
+            BloodType = create.BloodType
         };
 
-        services.Context.Patients.Add(patient);
+        var patientEntry = services.Context.Patients.Add(patient);
         await services.Context.SaveChangesAsync();
 
-        return TypedResults.Created($"/api/healthrecord/patient/{patient.Id}");
+        return TypedResults.Created($"/api/healthrecord/patient/{patientEntry.Entity.Id}");
     }
 
-    private static async Task<Results<Created, NotFound<string>>> UpdatePatient(
+    public static async Task<Results<Created, NotFound<string>>> UpdatePatient(
         [AsParameters] HealthRecordServices services,
         Patient patientNeedToUpdate)
     {
@@ -139,7 +348,7 @@ public static class HealthRecordApi
         return TypedResults.Created($"/api/patients/{patientNeedToUpdate.Id}");
     }
 
-    private static async Task<Results<NoContent, NotFound<string>>> DeletePatient(
+    public static async Task<Results<NoContent, NotFound<string>>> DeletePatient(
         [AsParameters] HealthRecordServices services,
         Guid patientId)
     {
@@ -157,7 +366,7 @@ public static class HealthRecordApi
     }
 
     // Check info patient service
-    private static Task<Results<Ok<string>, BadRequest>> HealthRecordInfo([AsParameters] HealthRecordServices services)
+    public static Task<Results<Ok<string>, BadRequest>> HealthRecordInfo([AsParameters] HealthRecordServices services)
     {
         services.Logger.LogInformation("Called API route 'api/healthrecord'");
         return Task.FromResult<Results<Ok<string>, BadRequest>>(TypedResults.Ok("Health Record API V1.0"));

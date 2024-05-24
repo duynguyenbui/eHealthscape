@@ -1,41 +1,16 @@
 using Asp.Versioning;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace eHealthscape.ServiceDefaults;
 
 public static partial class Extensions
 {
-    public static IHostApplicationBuilder AddDefaultOpenApi(this IHostApplicationBuilder builder,
-        IApiVersioningBuilder? apiVersioning = default)
-    {
-        var services = builder.Services;
-        var configuration = builder.Configuration;
-        var openApi = configuration.GetSection("OpenApi");
-
-        if (!openApi.Exists()) return builder;
-
-        services.AddEndpointsApiExplorer();
-
-        if (apiVersioning is not null)
-        {
-            // the default format will just be ApiVersion.ToString(); for example, 1.0.
-            // this will format the version as "'v'major[.minor][-status]"
-            apiVersioning.AddApiExplorer(options => options.GroupNameFormat = "'v'VVV");
-            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            services.AddSwaggerGen(options => options.OperationFilter<OpenApiDefaultValues>());
-        }
-
-        return builder;
-    }
-
     public static IApplicationBuilder UseDefaultOpenApi(this WebApplication app)
     {
         var configuration = app.Configuration;
@@ -52,17 +27,18 @@ public static partial class Extensions
         {
             app.UseSwaggerUI(setup =>
             {
-                // {
-                //   "OpenApi": {
-                //     "Endpoint: {
-                //         "Name": 
-                //     },
-                //     "Auth": {
-                //         "ClientId": ..,
-                //         "AppName": ..
-                //     }
-                //   }
-                // }
+                /// {
+                ///   "OpenApi": {
+                ///     "Endpoint: {
+                ///         "Name": 
+                ///     },
+                ///     "Auth": {
+                ///         "ClientId": ..,
+                ///         "AppName": ..
+                ///     }
+                ///   }
+                /// }
+
                 var pathBase = configuration["PATH_BASE"] ?? string.Empty;
                 var authSection = openApiSection.GetSection("Auth");
                 var endpointSection = openApiSection.GetRequiredSection("Endpoint");
@@ -87,5 +63,32 @@ public static partial class Extensions
         }
 
         return app;
+    }
+
+    public static IHostApplicationBuilder AddDefaultOpenApi(
+        this IHostApplicationBuilder builder,
+        IApiVersioningBuilder? apiVersioning = default)
+    {
+        var services = builder.Services;
+        var configuration = builder.Configuration;
+        var openApi = configuration.GetSection("OpenApi");
+
+        if (!openApi.Exists())
+        {
+            return builder;
+        }
+
+        services.AddEndpointsApiExplorer();
+
+        if (apiVersioning is not null)
+        {
+            // the default format will just be ApiVersion.ToString(); for example, 1.0.
+            // this will format the version as "'v'major[.minor][-status]"
+            apiVersioning.AddApiExplorer(options => options.GroupNameFormat = "'v'VVV");
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen(options => options.OperationFilter<OpenApiDefaultValues>());
+        }
+
+        return builder;
     }
 }

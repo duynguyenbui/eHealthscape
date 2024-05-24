@@ -10,4 +10,6 @@ public class Patient
     public string Address { get; set; } = default!;
     public string PhoneNumber { get; set; } = default!;
     public string BloodType { get; set; } = default!;
+    
+    // TODO: Add information related to social security
 }
