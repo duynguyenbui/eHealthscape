@@ -33,17 +33,20 @@ export const ActionMenu = ({ patient }: { patient: Patient }) => {
         >
           Copy patient ID
         </DropdownMenuItem>
+        <Link href={`/healthrecords/${patient.id}`}>
+          <DropdownMenuItem>View health records</DropdownMenuItem>
+        </Link>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="bg-red-50"
-          onClick={() => modal.onOpen("delete-patient", { patientId: patient.id })}
+          onClick={() =>
+            modal.onOpen("delete-patient", { patientId: patient.id })
+          }
         >
           Delete Patient
         </DropdownMenuItem>
         <Link href={`/patients/update/${patient.id}`}>
-          <DropdownMenuItem className="bg-slate-50">
-            Update Patient
-          </DropdownMenuItem>
+          <DropdownMenuItem>Update Patient</DropdownMenuItem>
         </Link>
       </DropdownMenuContent>
     </DropdownMenu>

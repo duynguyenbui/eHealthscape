@@ -21,8 +21,8 @@ public static class HealthRecordApi
                 await context.Patients.Select(p => p.BloodType).Distinct().ToListAsync());
 
         // Querying patient records
-        api.MapGet("/healthrecords/all", GetHealthRecords);
-        api.MapGet("/healthrecords/{healthrecordId:Guid}", GetHealthRecordById);
+        api.MapGet("/healthrecords/all", GetHealthRecords); // TODO: May be not used
+        api.MapGet("/healthrecords/{healthrecordId:Guid}", GetHealthRecordById); // TODO: May be not used
         api.MapGet("/healthrecords/related/to/patient/{patientId:Guid}", GetHealthRecordsByPatientId);
 
         // Querying Vital Signs

@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+option csharp_namespace = "eHealthscape.SpeechRecognition.API.Grpc";
+
+package SpeechApi;
+
+// Define the Speech message
+message Speech {
+  string userId = 1;
+  string patientId = 2;
+  string text = 3;
+  string createdAt = 4; // Using string to represent DateTime in RFC 3339 format
+}
+
+// Define the request messages
+message SaveSpeechTextRequest {
+  Speech speech = 1;
+}
+
+message GetSpeechTextRequest {
+  string userId = 1;
+  string patientId = 2;
+}
+
+message GetSpeechesByUserIdRequest {
+  string userId = 1;
+}
+
+message GetSpeechesByPatientIdRequest {
+  string patientId = 1;
+}
+
+message SaveSpeechTextResponse {
+  Speech speech = 1;
+}
+
+message GetSpeechTextResponse {
+  Speech speech = 1;
+}
+
+message GetSpeechesResponse {
+  repeated Speech speeches = 1;
+}
+
+// Define the SpeechRecognition service
+service SpeechRecognitionService {
+  rpc SaveSpeechText (SaveSpeechTextRequest) returns (SaveSpeechTextResponse);
+  rpc GetSpeechText (GetSpeechTextRequest) returns (GetSpeechTextResponse);
+  rpc GetSpeechesByUserId (GetSpeechesByUserIdRequest) returns (GetSpeechesResponse);
+  rpc GetSpeechesByPatientId (GetSpeechesByPatientIdRequest) returns (GetSpeechesResponse);
+}

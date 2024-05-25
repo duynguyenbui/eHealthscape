@@ -1,4 +1,3 @@
-import { formatDate } from "@/lib/utils";
 import { z } from "zod";
 
 export interface Patient {
@@ -10,6 +9,18 @@ export interface Patient {
   address: string;
   phoneNumber: string;
   bloodType: string;
+}
+
+export interface HealthRecord {
+  id: string;
+  nurseId: string;
+  createdAt: string;
+  updatedAt: string;
+  patientId: string;
+  patient: Patient;
+  examinations: any[];
+  careSheets: any[];
+  vitalSigns: any[];
 }
 
 export const PatientSchema = z.object({

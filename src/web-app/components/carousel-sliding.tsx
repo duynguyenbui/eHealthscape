@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Autoplay from "embla-carousel-autoplay";
 
 import {
   Card,
@@ -22,11 +21,13 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 
 export function CarouselSliding() {
-  const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
-  );
-
-  const variants = ["default", "secondary", "destructive", "premium"];
+  const variants = [
+    "default",
+    "premium",
+    "secondary",
+    "destructive",
+    "outline",
+  ];
 
   const cardContents = [
     {
@@ -35,6 +36,13 @@ export function CarouselSliding() {
       content:
         "Review the patient's medical history, current medications, and previous diagnoses to provide optimal care.",
       link: "/patients",
+    },
+    {
+      title: "Health Record Introduction",
+      description: "Access comprehensive health records related to patients.",
+      content:
+        "Review patients' medical histories, current medications, and previous diagnoses to provide optimal care.",
+      link: "/healthrecords",
     },
     {
       title: "Add Care Sheet",
@@ -61,12 +69,9 @@ export function CarouselSliding() {
 
   return (
     <Carousel
-      plugins={[plugin.current]}
       opts={{
         align: "start",
       }}
-      onMouseEnter={() => plugin.current.stop()}
-      onMouseLeave={() => plugin.current.reset()}
       className="w-full h-full"
     >
       <CarouselContent className="-ml-4">

@@ -24,7 +24,7 @@
         <PackageVersion Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1"/>
         <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="$(AspnetVersion)"/>
         <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(AspnetVersion)"/>
-        <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(AspnetVersion)" />
+        <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(AspnetVersion)"/>
         <!-- Version together with EF -->
         <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(EfVersion)"/>
         <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="$(EfVersion)"/>
@@ -37,8 +37,10 @@
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5"/>
         <PackageVersion Include="Testcontainers.PostgreSql" Version="3.8.0"/>
         <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.7.24251.11"/>
-        <PackageVersion Include="Polly.Core" Version="8.4.0" />
-        <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.9.0-alpha.1" />
-        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0-alpha.1" />
+        <PackageVersion Include="Polly.Core" Version="8.4.0"/>
+        <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.9.0-alpha.1"/>
+        <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0-alpha.1"/>
+        <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.63.0"/>
     </ItemGroup>
 </Project>
