@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}"
-          file: src/Speech.API/Dockerfile
+          file: src/SpeechRecognition.API/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/speech-svc:latest
