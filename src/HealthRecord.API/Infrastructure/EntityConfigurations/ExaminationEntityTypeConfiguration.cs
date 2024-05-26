@@ -7,6 +7,6 @@ class ExaminationEntityTypeConfiguration : IEntityTypeConfiguration<Examination>
         builder.ToTable("Examination");
 
         builder.HasOne(cs => cs.PatientRecord)
-            .WithMany();
+            .WithMany().OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,12 +1,7 @@
-﻿using System.Security.Claims;
+﻿using eHealthscape.ServiceDefaults;
 
 using Identity.API;
 using Identity.API.Data;
-using Identity.API.Models;
-
-using IdentityModel;
-
-using Microsoft.AspNetCore.Identity;
 
 using Serilog;
 
@@ -20,6 +15,8 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.AddServiceDefaults();
+
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console(
             outputTemplate:
@@ -27,11 +24,12 @@ try
         .Enrich.FromLogContext()
         .ReadFrom.Configuration(ctx.Configuration));
 
-    
-    
+
     var app = builder
         .ConfigureServices()
         .ConfigurePipeline();
+
+    app.MapDefaultEndpoints();
 
     // this seeding is only for the template to bootstrap the DB and users.
     // in production you will likely want a different approach.

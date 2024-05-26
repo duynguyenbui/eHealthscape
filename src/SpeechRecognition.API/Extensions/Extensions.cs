@@ -12,7 +12,5 @@ public static class Extensions
             ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!));
 
         builder.Services.AddScoped<ISpeechRecognitionRepository, RedisSpeechRecognitionRepository>();
-
-        builder.Services.AddGrpc();
     }
 }

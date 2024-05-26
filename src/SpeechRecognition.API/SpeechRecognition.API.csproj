@@ -5,12 +5,6 @@
         <RootNamespace>eHealthscape.SpeechRecognition.API</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
-
-    <ItemGroup>
-        <Content Include="..\..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
-    </ItemGroup>
     
     <ItemGroup>
         <PackageReference Include="StackExchange.Redis"/>
@@ -23,6 +17,12 @@
 
     <ItemGroup>
         <Protobuf Include="Proto\speech.proto" GrpcServices="Server" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

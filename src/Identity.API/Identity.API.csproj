@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <Nullable>enable</Nullable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +20,16 @@
 
     <ItemGroup>
         <Compile Include="..\Shared\MigrateDbContextExtensions.cs" Link="Extensions\MigrateDbContextExtensions.cs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\eHealthscape.ServiceDefaults\eHealthscape.ServiceDefaults.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
     <!--    <ItemGroup>-->

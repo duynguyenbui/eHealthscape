@@ -1,7 +1,5 @@
 #nullable enable
 
-
-
 namespace eHealthscape.SpeechRecognition.API.Extensions;
 
 internal static class ServerCallContextIdentityExtensions

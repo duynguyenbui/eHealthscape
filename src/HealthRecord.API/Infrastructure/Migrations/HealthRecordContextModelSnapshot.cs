@@ -218,7 +218,8 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
                 {
                     b.HasOne("eHealthscape.HealthRecord.API.Model.Patient", "Patient")
                         .WithOne()
-                        .HasForeignKey("eHealthscape.HealthRecord.API.Model.PatientRecord", "PatientId");
+                        .HasForeignKey("eHealthscape.HealthRecord.API.Model.PatientRecord", "PatientId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Patient");
                 });

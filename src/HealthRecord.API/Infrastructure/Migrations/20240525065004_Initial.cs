@@ -46,7 +46,8 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
                         name: "FK_PatientRecord_Patient_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patient",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

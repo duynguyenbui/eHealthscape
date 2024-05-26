@@ -6,6 +6,6 @@ class VitalSignEntityTypeConfiguration : IEntityTypeConfiguration<VitalSign>
     {
         builder.ToTable("VitalSign");
 
-        builder.HasOne(vs => vs.PatientRecord).WithMany();
+        builder.HasOne(vs => vs.PatientRecord).WithMany().OnDelete(DeleteBehavior.Cascade);
     }
 }

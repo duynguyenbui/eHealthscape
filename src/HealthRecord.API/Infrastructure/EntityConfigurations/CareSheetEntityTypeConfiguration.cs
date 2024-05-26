@@ -7,6 +7,6 @@ class CareSheetEntityTypeConfiguration : IEntityTypeConfiguration<CareSheet>
         builder.ToTable("CarSheet");
 
         builder.HasOne(cs => cs.PatientRecord)
-            .WithMany();
+            .WithMany().OnDelete(DeleteBehavior.Cascade);
     }
 }

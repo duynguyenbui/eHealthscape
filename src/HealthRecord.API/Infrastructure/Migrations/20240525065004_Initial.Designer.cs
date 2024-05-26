@@ -12,7 +12,7 @@ using eHealthscape.HealthRecord.API.Infrastructure;
 namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
 {
     [DbContext(typeof(HealthRecordContext))]
-    [Migration("20240522133016_Initial")]
+    [Migration("20240525065004_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -221,7 +221,8 @@ namespace eHealthscape.HealthRecord.API.Infrastructure.Migrations
                 {
                     b.HasOne("eHealthscape.HealthRecord.API.Model.Patient", "Patient")
                         .WithOne()
-                        .HasForeignKey("eHealthscape.HealthRecord.API.Model.PatientRecord", "PatientId");
+                        .HasForeignKey("eHealthscape.HealthRecord.API.Model.PatientRecord", "PatientId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Patient");
                 });
