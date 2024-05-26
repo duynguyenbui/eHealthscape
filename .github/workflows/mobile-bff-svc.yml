@@ -1,11 +1,11 @@
-name: speech-svc.yml
+name: mobile-bff-svc.yml
 on:
-  workflow_dispatch: 
-  push: 
+  workflow_dispatch:
+  push:
     branches:
       - main
     paths:
-      - src/Speech.API/**
+      - src/Mobile.Bff/**
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}"
-          file: src/SpeechRecognition.API/Dockerfile
+          file: src/Mobile.Bff/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/speech-svc:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mobile-bff-svc:latest

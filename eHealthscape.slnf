@@ -1,0 +1,11 @@
+{
+  "solution": {
+    "path": "eHealthscape.sln",
+    "projects": [
+      "src\\eHealthscape.ServiceDefaults\\eHealthscape.ServiceDefaults.csproj",
+      "src\\HealthRecord.API\\HealthRecord.API.csproj",
+      "src\\Identity.API\\Identity.API.csproj",
+      "src\\SpeechRecognition.API\\SpeechRecognition.API.csproj"
+    ]
+  }
+}

@@ -10,9 +10,9 @@ public class PatientRecord
     public Guid PatientId { get; set; }
     public Patient Patient { get; set; } = default!;
 
-    public List<Examination> Examinations { set; get; }
+    public List<Examination>? Examinations { set; get; }
 
-    public List<CareSheet> CareSheets { set; get; }
+    public List<CareSheet>? CareSheets { set; get; }
     
-    public List<VitalSign> VitalSigns { set; get; }
+    public List<VitalSign>? VitalSigns { set; get; }
 }
