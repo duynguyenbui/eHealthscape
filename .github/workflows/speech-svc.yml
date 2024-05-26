@@ -1,5 +1,6 @@
 name: speech-svc.yml
 on:
+  workflow_dispatch: 
   push: 
     branches:
       - main
