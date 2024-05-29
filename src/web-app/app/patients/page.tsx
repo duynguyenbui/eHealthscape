@@ -14,7 +14,7 @@ const PatientPage = async () => {
   // TODO: Change this to PaginatedItems
   const patients = await getAllPatients();
 
-  const formattedPatients = formatPatients(patients.data || []);
+  const formattedPatients = formatPatients(patients?.data || []);
 
   return (
     <div className="flex flex-col">

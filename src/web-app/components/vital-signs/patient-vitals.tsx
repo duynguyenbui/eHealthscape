@@ -14,13 +14,13 @@ import { formatDate } from "@/lib/utils";
 export const PatientVitals = ({
   patientRecordId,
 }: {
-  patientRecordId: string;
+  patientRecordId?: string;
 }) => {
   const [vitalSigns, setVitalSigns] = useState<VitalSign[]>([]);
   const modal = useModal();
 
   useEffect(() => {
-    getVitalSignsByHealthRecordId(patientRecordId)
+    getVitalSignsByHealthRecordId(patientRecordId || "")
       .then((res) => {
         res.data.forEach((vs) => {
           vs.measureAt = formatDate(vs.measureAt);

@@ -1,5 +1,3 @@
-using eHealthscape.SpeechRecognition.API.Model;
-
 namespace eHealthscape.SpeechRecognition.API.Repositories;
 
 public interface ISpeechRecognitionRepository

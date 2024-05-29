@@ -16,11 +16,11 @@ public static class HealthRecordApi
         api.MapDelete("/patients/{patientId:Guid}", DeletePatient);
 
         // Querying patient
-        doctor.MapGet("/patients/all", GetPatients);
+        api.MapGet("/patients/all", GetPatients);
         api.MapGet("/patients/{patientId:Guid}", GetPatientById);
 
         api.MapGet("/patients/bloodtypes/{bloodType:minlength(1)}", GetPatientsByBloodType);
-        doctor.MapGet("/patients/bloodtypes/all",
+        api.MapGet("/patients/bloodtypes/all",
             async (HealthRecordContext context) =>
                 await context.Patients.Select(p => p.BloodType).Distinct().ToListAsync());
 

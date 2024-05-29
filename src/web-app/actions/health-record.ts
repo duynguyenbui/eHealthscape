@@ -15,6 +15,6 @@ export async function getHealthRecordRelatedToPatient(
     return data;
   } catch (err) {
     console.error(err);
-    throw new Error("Failed to fetch health record data");
+    throw new Error();
   }
 }

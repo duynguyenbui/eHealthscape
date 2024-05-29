@@ -9,14 +9,14 @@ public static class Config
         new IdentityResource[] { new IdentityResources.OpenId(), new IdentityResources.Profile(), };
 
     public static IEnumerable<ApiScope> ApiScopes =>
-        new ApiScope[] { new("healthrecords") };
+        new ApiScope[] { new("healthrecords"), new("speech") };
 
     public static IEnumerable<Client> Clients(IConfiguration configuration) =>
         new Client[]
         {
             new()
             {
-                ClientId = "healthrecordswaggerui",
+                ClientId = "healthrecordsswaggerui",
                 ClientName = "HealthRecord Swagger UI",
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowAccessTokensViaBrowser = true,
@@ -27,19 +27,30 @@ public static class Config
             },
             new()
             {
-                ClientId = "postman",
-                ClientName = "Postman",
-                AllowedScopes =
-                {
-                    IdentityServerConstants.StandardScopes.Profile,
-                    IdentityServerConstants.StandardScopes.OpenId,
-                    "healthrecords"
-                },
+                ClientId = "speechswaggerui",
+                ClientName = "Speech Swagger UI",
+                AllowedGrantTypes = GrantTypes.Implicit,
+                AllowAccessTokensViaBrowser = true,
+                RedirectUris = { $"{configuration["SpeechApiClient"]}/swagger/oauth2-redirect.html" },
+                PostLogoutRedirectUris = { $"{configuration["SpeechApiClient"]}/swagger/" },
                 AlwaysIncludeUserClaimsInIdToken = true,
-                RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
-                ClientSecrets = new[] { new Secret("NotASecret".Sha256()) },
-                AllowedGrantTypes = { GrantType.ResourceOwnerPassword }
+                AllowedScopes = { "speech" }
             },
+            // new()
+            // {
+            //     ClientId = "postman",
+            //     ClientName = "Postman",
+            //     AllowedScopes =
+            //     {
+            //         IdentityServerConstants.StandardScopes.Profile,
+            //         IdentityServerConstants.StandardScopes.OpenId,
+            //         "healthrecords"
+            //     },
+            //     AlwaysIncludeUserClaimsInIdToken = true,
+            //     RedirectUris = { "https://www.getpostman.com/oauth2/callback" },
+            //     ClientSecrets = new[] { new Secret("NotASecret".Sha256()) },
+            //     AllowedGrantTypes = { GrantType.ResourceOwnerPassword }
+            // },
             new()
             {
                 ClientId = "webapp",
@@ -54,12 +65,14 @@ public static class Config
                 {
                     IdentityServerConstants.StandardScopes.Profile,
                     IdentityServerConstants.StandardScopes.OpenId,
-                    "healthrecords"
+                    "healthrecords",
+                    "speech"
                 },
                 AccessTokenLifetime = 3600 * 24 * 30, // 30 days
                 IdentityTokenLifetime = 3600 * 24 * 30, // 30 days
                 AlwaysIncludeUserClaimsInIdToken = true,
-                AccessTokenType = AccessTokenType.Jwt
+                AccessTokenType = AccessTokenType.Jwt,
+                PostLogoutRedirectUris = { configuration["WebAppClient"]! }
             }
         };
 }

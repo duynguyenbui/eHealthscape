@@ -6,6 +6,7 @@ import { FC, useEffect, useState } from "react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { Button } from "./ui/button";
 
 interface TextProps {}
 
@@ -35,29 +36,40 @@ const RecordSpeech: FC<TextProps> = ({}) => {
       </h1>
       <p className=" mt-6 pb-32 mb-4 rounded-md bg-base-100 lg:w-96 lg:h-48 w-64 h-64">
         <span className="ml-2 font-bold text-xl bg-base-100">
-          generated text:
+          Generated Text:
         </span>
-        {transcript}
+        <span className="text-muted-foreground">{transcript}</span>
       </p>
       <p className="mb-2 text-xl font-bold">
         Microphone: {listening ? "Listing to your voice.." : "off"}
       </p>
       <div className="flex gap-3">
-        <button
+        <Button
+          variant="premium"
           className="btn btn-primary btn-sm"
-          onClick={() => SpeechRecognition.startListening()}
+          onClick={() =>
+            SpeechRecognition.startListening({
+              continuous: true,
+              language: "Vietnamese",
+            })
+          }
         >
           Start
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="destructive"
           className="btn btn-secondary btn-sm"
           onClick={SpeechRecognition.stopListening}
         >
           Stop
-        </button>
-        <button className="btn btn-accent btn-sm" onClick={resetTranscript}>
+        </Button>
+        <Button
+          variant="secondary"
+          className="btn btn-accent btn-sm"
+          onClick={resetTranscript}
+        >
           Reset
-        </button>
+        </Button>
       </div>
     </div>
   );

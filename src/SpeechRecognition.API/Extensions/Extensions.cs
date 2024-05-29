@@ -13,16 +13,15 @@ public static class Extensions
 
         builder.Services.AddScoped<ISpeechRecognitionRepository, RedisSpeechRecognitionRepository>();
         builder.Services.AddScoped<RedisProducerService>();
-        
-        if (builder.Configuration?.GetSection("AI") != null)
-        {
-            builder.Services.AddScoped<IAnalysisSpeechService, AnalysisSpeechService>();
 
+        if (builder.Configuration.GetSection("AI").Exists())
+        {
             builder.Services.AddOpenAIServices(options =>
             {
                 options.ApiUrl = builder.Configuration["AI:OpenAI:BaseUrl"]!;
                 options.ApiKey = builder.Configuration["AI:OpenAI:ApiKey"]!;
             });
+            builder.Services.AddScoped<IAnalysisSpeechService, AnalysisSpeechService>();
         }
     }
 }
