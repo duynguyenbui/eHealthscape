@@ -21,6 +21,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/blob-to-base64.ts", "lib/create-media-stream.js", "hooks/use-record-voice.js", "components/microphone.tsx"],
   "exclude": ["node_modules"]
 }

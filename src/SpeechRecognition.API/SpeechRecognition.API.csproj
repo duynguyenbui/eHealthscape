@@ -10,15 +10,11 @@
     
     <ItemGroup>
         <PackageReference Include="StackExchange.Redis" Version="2.7.33" />
-        <PackageReference Include="Grpc.AspNetCore" Version="2.63.0"/>
+        <PackageReference Include="OpenAI.Net.Client" Version="1.0.21" />
     </ItemGroup>
     
     <ItemGroup>
-        <ProjectReference Include="..\eHealthscape.ServiceDefaults\eHealthscape.ServiceDefaults.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Protobuf Include="Proto\speech.proto" GrpcServices="Server" />
+        <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
     </ItemGroup>
 
     <ItemGroup>

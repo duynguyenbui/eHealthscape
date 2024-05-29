@@ -96,7 +96,7 @@ public class SeedData
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             context.Database.Migrate();
 
-            RoleManager<IdentityRole?> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var doctor = roleManager.FindByNameAsync("Doctor").Result;
             if (doctor == null)
             {

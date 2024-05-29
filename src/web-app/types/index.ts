@@ -23,6 +23,28 @@ export interface HealthRecord {
   vitalSigns: any[];
 }
 
+export interface VitalSign {
+  id: string;
+  pulse: number;
+  bloodPressure: number;
+  temperature: number;
+  spo2: number;
+  respirationRate: number;
+  height: number;
+  weight: number;
+  measureAt: string;
+  nurseId: string;
+  patientRecordId: string;
+  patientRecord: any;
+}
+
+export interface PaginatedItems<T> {
+  pageIndex: number;
+  pageSize: number;
+  count: number;
+  data: T[];
+}
+
 export const PatientSchema = z.object({
   id: z.string(),
   firstName: z.string().min(1, { message: "First name is required." }),
@@ -36,4 +58,15 @@ export const PatientSchema = z.object({
   bloodType: z.string({
     required_error: "Blood type is required.",
   }),
+});
+
+export const VitalSignSchema = z.object({
+  pulse: z.coerce.number(),
+  bloodPressure: z.coerce.number(),
+  temperature: z.coerce.number(),
+  spo2: z.coerce.number(),
+  respirationRate: z.coerce.number(),
+  height: z.coerce.number(),
+  weight: z.coerce.number(), // SOLUTION
+  patientRecordId: z.string().optional(),
 });

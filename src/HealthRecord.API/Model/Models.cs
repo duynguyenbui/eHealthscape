@@ -9,10 +9,6 @@ public class CreateVitalSign
     public int RespirationRate { get; set; }
     public float Height { get; set; }
     public float Weight { get; set; }
-    public DateTime MeasureAt { get; set; }
-
-    public Guid NurseId { get; set; }
-
     public Guid PatientRecordId { get; set; }
 }
 

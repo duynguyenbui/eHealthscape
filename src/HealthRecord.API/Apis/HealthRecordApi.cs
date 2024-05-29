@@ -7,16 +7,20 @@ public static class HealthRecordApi
     {
         var api = app.MapGroup("api").HasApiVersion(1.0);
 
+        var doctor = api.MapGroup("").RequireAuthorization(builder => builder.RequireRole("Doctor"));
+        var nurse = api.MapGroup("").RequireAuthorization(builder => builder.RequireRole("Nurse"));
+        
         // Modifying patients
         api.MapPost("/patients", CreatePatient);
         api.MapPut("/patients", UpdatePatient);
         api.MapDelete("/patients/{patientId:Guid}", DeletePatient);
 
         // Querying patient
-        api.MapGet("/patients/all", GetPatients);
+        doctor.MapGet("/patients/all", GetPatients);
         api.MapGet("/patients/{patientId:Guid}", GetPatientById);
+
         api.MapGet("/patients/bloodtypes/{bloodType:minlength(1)}", GetPatientsByBloodType);
-        api.MapGet("/patients/bloodtypes/all",
+        doctor.MapGet("/patients/bloodtypes/all",
             async (HealthRecordContext context) =>
                 await context.Patients.Select(p => p.BloodType).Distinct().ToListAsync());
 
@@ -48,7 +52,7 @@ public static class HealthRecordApi
         api.MapPost("/healthrecords/caresheets", CreateCareSheet);
 
         // Check info
-        api.MapGet("/", HealthRecordInfo);
+        api.MapGet("/hello-world", HelloWorld).AllowAnonymous();
 
         return api;
     }
@@ -161,8 +165,8 @@ public static class HealthRecordApi
             RespirationRate = create.RespirationRate,
             Height = create.Height,
             Weight = create.Weight,
-            MeasureAt = create.MeasureAt,
-            NurseId = create.NurseId, //  TODO: Get from claim
+            NurseId = Guid.NewGuid(),
+            MeasureAt = DateTime.UtcNow,
             PatientRecordId = create.PatientRecordId,
             PatientRecord = patientRecord
         };
@@ -177,9 +181,6 @@ public static class HealthRecordApi
         [AsParameters] HealthRecordServices services, Guid patientId)
     {
         var patientRecord = await services.Context.PatientRecords
-            .Include(pr => pr.Examinations)
-            .Include(pr => pr.CareSheets)
-            .Include(pr => pr.VitalSigns)
             .Include(pr => pr.Patient)
             .FirstOrDefaultAsync(pr => pr.PatientId == patientId);
 
@@ -268,11 +269,14 @@ public static class HealthRecordApi
         };
 
         var patientEntry = services.Context.Patients.Add(patient);
-        
-        var patientRecord = new PatientRecord { NurseId = Guid.NewGuid(), PatientId = patientEntry.Entity.Id, Patient = patientEntry.Entity };
+
+        var patientRecord = new PatientRecord
+        {
+            NurseId = Guid.NewGuid(), PatientId = patientEntry.Entity.Id, Patient = patientEntry.Entity
+        };
 
         await services.Context.PatientRecords.AddAsync(patientRecord);
-        
+
         await services.Context.SaveChangesAsync();
 
         return TypedResults.Created($"/api/healthrecord/patient/{patientEntry.Entity.Id}");
@@ -315,9 +319,9 @@ public static class HealthRecordApi
         return TypedResults.NoContent();
     }
 
-    public static Task<Results<Ok<string>, BadRequest>> HealthRecordInfo([AsParameters] HealthRecordServices services)
+    public static async Task<string> HelloWorld([AsParameters] HealthRecordServices services)
     {
         services.Logger.LogInformation("Called API route 'api/healthrecord'");
-        return Task.FromResult<Results<Ok<string>, BadRequest>>(TypedResults.Ok("Health Record API V1.0"));
+        return "Hello, world!";
     }
 }

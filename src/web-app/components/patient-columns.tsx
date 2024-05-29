@@ -2,7 +2,7 @@
 
 import { Patient } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { ActionMenu } from "./action-menu";
+import { ActionMenu } from "./patient-action-menu";
 
 export const columns: ColumnDef<Patient>[] = [
   {

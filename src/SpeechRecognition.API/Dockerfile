@@ -8,7 +8,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/SpeechRecognition.API/SpeechRecognition.API.csproj", "src/SpeechRecognition.API/"]
-COPY ["src/eHealthscape.ServiceDefaults/eHealthscape.ServiceDefaults.csproj", "src/eHealthscape.ServiceDefaults/"]
+COPY ["src/ServiceDefaults/ServiceDefaults.csproj", "src/ServiceDefaults/"]
 RUN dotnet restore "src/SpeechRecognition.API/SpeechRecognition.API.csproj"
 COPY . .
 WORKDIR "/src/src/SpeechRecognition.API"

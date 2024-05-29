@@ -1,7 +1,7 @@
 "use server";
 
 import axiosInterceptorInstance from "@/axios-interceptor-instance";
-import { Patient, PatientSchema } from "@/types";
+import { PaginatedItems, Patient, PatientSchema } from "@/types";
 import axios from "axios";
 import { z } from "zod";
 
@@ -41,7 +41,7 @@ export async function createPatient(values: z.infer<typeof PatientSchema>) {
 
   if (res == 201)
     return {
-      success: "Create Successfully",
+      success: "Create Patient Successfully",
     };
 
   return { error: "Something went wrong!" };
@@ -125,4 +125,17 @@ export async function deletePatient(patientId: string) {
     }
     return { error: "An unknown error occurred" };
   }
+}
+
+export async function getAllPatients(): Promise<PaginatedItems<Patient>> {
+  const patients = await axiosInterceptorInstance
+    .get(
+      `${process.env
+        .HEALTH_RECORD_API_URL!}/api/patients/all?PageSize=10&PageIndex=0&api-version=${process
+        .env.HEALTH_RECORD_API_VERSION!}`
+    )
+    .then((res) => res.data)
+    .catch((err) => console.error(err));
+
+  return patients as PaginatedItems<Patient>;
 }

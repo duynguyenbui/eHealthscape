@@ -12,16 +12,16 @@ public class RedisSpeechRecognitionRepository(
 
     private static RedisKey SpeechKeyPrefix = "/speech/"u8.ToArray();
 
-    private static RedisKey GetSpeechKey(string userId, string patientId) => SpeechKeyPrefix
+    private static RedisKey GetSpeechKey(string? userId, string? patientId) => SpeechKeyPrefix
         .Append(userId)
         .Append("/")
         .Append(patientId);
 
-    public async Task<Speech> SaveSpeechTextAsync(Speech speech)
+    public async Task<Speech?> SaveSpeechTextAsync(Speech? speech)
     {
-        var json = JsonSerializer.SerializeToUtf8Bytes(speech, SpeechSerializationContext.Default.Speech);
+        var json = JsonSerializer.SerializeToUtf8Bytes(speech, SpeechSerializationContext.Default.Speech!);
 
-        var created = await _database.StringSetAsync(GetSpeechKey(speech.UserId, speech.PatientId), json);
+        var created = await _database.StringSetAsync(GetSpeechKey(speech?.UserId, speech?.PatientId), json);
 
         if (!created)
         {
@@ -33,7 +33,7 @@ public class RedisSpeechRecognitionRepository(
         return await GetSpeechTextAsync(speech.UserId, speech.PatientId);
     }
 
-    public async Task<Speech> GetSpeechTextAsync(string userId, string patientId)
+    public async Task<Speech?> GetSpeechTextAsync(string? userId, string? patientId)
     {
         using var data = await _database.StringGetLeaseAsync(GetSpeechKey(userId, patientId));
 
@@ -88,7 +88,7 @@ public class RedisSpeechRecognitionRepository(
             var data = await _database.StringGetAsync(key);
             if (!data.IsNullOrEmpty)
             {
-                var speech = JsonSerializer.Deserialize<Speech>(data, SpeechSerializationContext.Default.Speech);
+                var speech = JsonSerializer.Deserialize(data, SpeechSerializationContext.Default.Speech);
                 if (speech != null)
                 {
                     speeches.Add(speech);
@@ -102,6 +102,4 @@ public class RedisSpeechRecognitionRepository(
 
 [JsonSerializable(typeof(Speech))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
-public partial class SpeechSerializationContext : JsonSerializerContext
-{
-}
+public partial class SpeechSerializationContext : JsonSerializerContext;

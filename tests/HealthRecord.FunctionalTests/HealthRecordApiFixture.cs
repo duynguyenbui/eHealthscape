@@ -1,8 +1,14 @@
+using WebMotions.Fake.Authentication.JwtBearer;
+
 namespace eHealthscape.HealthRecord.FunctionalTests;
 
 public class HealthRecordApiFixture : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder().Build();
+    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
+        .WithUsername("postgres")
+        .WithPassword("postgrespw")
+        .WithImage("postgres:latest")
+        .Build();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -18,6 +24,9 @@ public class HealthRecordApiFixture : WebApplicationFactory<Program>, IAsyncLife
             {
                 optionsBuilder.UseNpgsql(_postgreSqlContainer.GetConnectionString());
             });
+
+            services.AddAuthentication(FakeJwtBearerDefaults.AuthenticationScheme)
+                .AddFakeJwtBearer(opt => opt.BearerValueType = FakeJwtBearerBearerValueType.Jwt);
         });
 
         builder.UseEnvironment("Development");

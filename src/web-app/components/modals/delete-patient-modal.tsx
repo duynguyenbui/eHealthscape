@@ -54,9 +54,10 @@ export function DeletePatientModal() {
             patient&apos;s data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
+        Hello
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onSubmit}>Delete</AlertDialogAction>
+          <AlertDialogAction onClick={onSubmit}>Create</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

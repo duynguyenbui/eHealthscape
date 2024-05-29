@@ -49,14 +49,21 @@ export function CarouselSliding() {
       description: "Track patient progress.",
       content:
         "Add and update care sheets to maintain detailed records of the patient's progress over time.",
-      link: "/caresheets",
+      link: "/patients",
     },
     {
       title: "Add Examination",
       description: "Document treatment plans.",
       content:
         "Complete treatment forms to outline and document the patient's treatment plan, including medications and procedures.",
-      link: "/examination",
+      link: "/patients",
+    },
+    {
+      title: "Add Vital Signs",
+      description: "Add vital signs to the patient's",
+      content:
+        "Conduct a thorough health assessment to monitor and maintain your overall well-being. This includes checking vital signs, conducting necessary tests, and reviewing your medical history.",
+      link: "/patients",
     },
     {
       title: "Health Check-up",

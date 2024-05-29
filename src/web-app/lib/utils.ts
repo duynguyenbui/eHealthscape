@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
-  return date.toLocaleDateString("en-GB"); // dd/mm/yyyy format
+  return date.toLocaleString("en-GB"); // dd/mm/yyyy format
 }
 
 export const formatPatients = (patients: Patient[]) => {

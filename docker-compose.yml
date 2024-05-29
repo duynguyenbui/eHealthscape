@@ -6,6 +6,8 @@
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgrespw
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
   redis.db:
     image: redis
     ports:
@@ -31,3 +33,10 @@
       - ./src/grafana/dashboards/:/var/lib/grafana/dashboards
     ports:
       - "4444:3000"
+volumes:
+  postgres-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /Users/buiduynguyen/Desktop/postgres-data

@@ -1,8 +1,3 @@
-
-
-
-
-
 namespace eHealthscape.HealthRecord.FunctionalTests;
 
 public class HealthRecordApiTests : IClassFixture<HealthRecordApiFixture>
@@ -22,13 +17,13 @@ public class HealthRecordApiTests : IClassFixture<HealthRecordApiFixture>
     public async Task CalledHealthRecordApiV1_0_ReturnsHealthRecordApiV1_0()
     {
         // Act
-        var response = await _httpClient.GetAsync("api/healthrecord");
+        var response = await _httpClient.GetAsync("/api/hello-world");
 
         // Assert
         response.EnsureSuccessStatusCode();
         var body = await response.Content.ReadAsStringAsync();
 
         // Assert with "Health Record API V1.0"
-        Assert.Equal("Health Record API V1.0", body);
+        Assert.Equal("Hello, world!", body);
     }
 }

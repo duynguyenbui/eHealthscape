@@ -10,7 +10,7 @@ public class VitalSign
     public int RespirationRate { get; set; }
     public float Height { get; set; }
     public float Weight { get; set; }
-    public DateTime MeasureAt { get; set; }
+    public DateTime MeasureAt { get; set; } 
     
     public Guid NurseId { get; set; }
 

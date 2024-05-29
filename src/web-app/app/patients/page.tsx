@@ -1,25 +1,20 @@
 import React from "react";
-import { DataTable } from "./data-table";
-import { columns } from "./columns";
+import { DataTable } from "../../components/data-table";
+import { columns } from "../../components/patient-columns";
 import { buttonVariants } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { cn, formatPatients } from "@/lib/utils";
 import axiosInterceptorInstance from "@/axios-interceptor-instance";
+import { getAllPatients } from "@/actions/patients";
 
 export const revalidate = 0; // revalidate at most every hour
 
 const PatientPage = async () => {
-  const patients = await axiosInterceptorInstance
-    .get(
-      `${process.env
-        .HEALTH_RECORD_API_URL!}/api/patients/all?PageSize=10&PageIndex=0&api-version=${process
-        .env.HEALTH_RECORD_API_VERSION!}`
-    )
-    .then((res) => res.data.data)
-    .catch((err) => console.error(err));
+  // TODO: Change this to PaginatedItems
+  const patients = await getAllPatients();
 
-  const formattedPatients = formatPatients(patients || []);
+  const formattedPatients = formatPatients(patients.data || []);
 
   return (
     <div className="flex flex-col">

@@ -25,9 +25,7 @@ internal static class HostingExtensions
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-
-        builder.Services.AddMigration<ApplicationDbContext, ApplicationDbContextSeed>();
-
+        
         builder.Services
             .AddIdentityServer(options =>
             {

@@ -1,4 +1,4 @@
-using eHealthscape.ServiceDefaults;
+using eHealthscape.SpeechRecognition.API.Services;
 
 namespace eHealthscape.SpeechRecognition.API.Extensions;
 
@@ -12,5 +12,17 @@ public static class Extensions
             ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!));
 
         builder.Services.AddScoped<ISpeechRecognitionRepository, RedisSpeechRecognitionRepository>();
+        builder.Services.AddScoped<RedisProducerService>();
+        
+        if (builder.Configuration?.GetSection("AI") != null)
+        {
+            builder.Services.AddScoped<IAnalysisSpeechService, AnalysisSpeechService>();
+
+            builder.Services.AddOpenAIServices(options =>
+            {
+                options.ApiUrl = builder.Configuration["AI:OpenAI:BaseUrl"]!;
+                options.ApiKey = builder.Configuration["AI:OpenAI:ApiKey"]!;
+            });
+        }
     }
 }

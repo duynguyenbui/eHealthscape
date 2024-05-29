@@ -17,6 +17,7 @@ try
 
     builder.AddServiceDefaults();
 
+    builder.Services.AddMigration<ApplicationDbContext>();
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console(
             outputTemplate:

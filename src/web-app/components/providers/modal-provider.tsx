@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { DeletePatientModal } from "../modals/delete-patient-modal";
+import { CreateVitalSignModal } from "../modals/create-vital-sign-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -16,6 +17,7 @@ export const ModalProvider = () => {
   return (
     <>
       <DeletePatientModal />
+      <CreateVitalSignModal />
     </>
   );
 };
