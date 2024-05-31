@@ -1,5 +1,3 @@
-using eHealthscape.SpeechRecognition.API.Model;
-
 namespace eHealthscape.SpeechRecognition.API.Repositories;
 
 public class RedisSpeechRecognitionRepository(
@@ -17,11 +15,13 @@ public class RedisSpeechRecognitionRepository(
         .Append("/")
         .Append(patientId);
 
-    public async Task<Speech?> SaveSpeechTextAsync(Speech? speech)
+    public async Task<ExaminationSpeech?> SaveSpeechTextAsync(ExaminationSpeech? examination)
     {
-        var json = JsonSerializer.SerializeToUtf8Bytes(speech, SpeechSerializationContext.Default.Speech!);
+        var json = JsonSerializer.SerializeToUtf8Bytes(examination,
+            ExaminationSerializationContext.Default.ExaminationSpeech!);
 
-        var created = await _database.StringSetAsync(GetSpeechKey(speech?.UserId, speech?.PatientId), json);
+        var created =
+            await _database.StringSetAsync(GetSpeechKey(examination?.UserId, examination?.PatientRecordId), json);
 
         if (!created)
         {
@@ -29,11 +29,11 @@ public class RedisSpeechRecognitionRepository(
             return null;
         }
 
-        logger.LogInformation("Speech persisted successfully.");
-        return await GetSpeechTextAsync(speech.UserId, speech.PatientId);
+        logger.LogInformation("ExaminationSpeech persisted successfully.");
+        return await GetSpeechTextAsync(examination.UserId, examination.PatientRecordId);
     }
 
-    public async Task<Speech?> GetSpeechTextAsync(string? userId, string? patientId)
+    public async Task<ExaminationSpeech?> GetSpeechTextAsync(string? userId, string? patientId)
     {
         using var data = await _database.StringGetLeaseAsync(GetSpeechKey(userId, patientId));
 
@@ -42,10 +42,10 @@ public class RedisSpeechRecognitionRepository(
             return null;
         }
 
-        return JsonSerializer.Deserialize(data.Span, SpeechSerializationContext.Default.Speech);
+        return JsonSerializer.Deserialize(data.Span, ExaminationSerializationContext.Default.ExaminationSpeech);
     }
 
-    public async Task<List<Speech>> GetSpeechesByUserIdAsync(string userId)
+    public async Task<List<ExaminationSpeech>> GetSpeechesByUserIdAsync(string userId)
     {
         var keys = new List<RedisKey>();
         var userKeyPattern = $"/speech/{userId}*";
@@ -55,24 +55,25 @@ public class RedisSpeechRecognitionRepository(
             keys.Add(key);
         }
 
-        var speeches = new List<Speech>();
+        var examinationSpeeches = new List<ExaminationSpeech>();
         foreach (var key in keys)
         {
             var data = await _database.StringGetAsync(key);
             if (!data.IsNullOrEmpty)
             {
-                var speech = JsonSerializer.Deserialize(data, SpeechSerializationContext.Default.Speech);
-                if (speech != null)
+                var examinationSpeech =
+                    JsonSerializer.Deserialize(data, ExaminationSerializationContext.Default.ExaminationSpeech);
+                if (examinationSpeech != null)
                 {
-                    speeches.Add(speech);
+                    examinationSpeeches.Add(examinationSpeech);
                 }
             }
         }
 
-        return speeches;
+        return examinationSpeeches;
     }
 
-    public async Task<List<Speech>> GetSpeechesByPatientIdAsync(string patientId)
+    public async Task<List<ExaminationSpeech>> GetSpeechesByPatientIdAsync(string patientId)
     {
         var keys = new List<RedisKey>();
         var patientKeyPattern = $"/speech/*/{patientId}";
@@ -82,13 +83,14 @@ public class RedisSpeechRecognitionRepository(
             keys.Add(key);
         }
 
-        var speeches = new List<Speech>();
+        var speeches = new List<ExaminationSpeech>();
         foreach (var key in keys)
         {
             var data = await _database.StringGetAsync(key);
             if (!data.IsNullOrEmpty)
             {
-                var speech = JsonSerializer.Deserialize(data, SpeechSerializationContext.Default.Speech);
+                var speech =
+                    JsonSerializer.Deserialize(data, ExaminationSerializationContext.Default.ExaminationSpeech);
                 if (speech != null)
                 {
                     speeches.Add(speech);
@@ -100,6 +102,6 @@ public class RedisSpeechRecognitionRepository(
     }
 }
 
-[JsonSerializable(typeof(Speech))]
+[JsonSerializable(typeof(ExaminationSpeech))]
 [JsonSourceGenerationOptions(PropertyNameCaseInsensitive = true)]
-public partial class SpeechSerializationContext : JsonSerializerContext;
+public partial class ExaminationSerializationContext : JsonSerializerContext;

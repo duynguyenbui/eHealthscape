@@ -17,10 +17,20 @@ export interface HealthRecord {
   createdAt: string;
   updatedAt: string;
   patientId: string;
-  patient: Patient;
+  patient?: Patient;
   examinations: any[];
   careSheets: any[];
   vitalSigns: any[];
+}
+
+export interface CareSheet {
+  id: string;
+  nurseId: string;
+  issueAt: string;
+  progressNote: string;
+  careInstruction: string;
+  patientRecordId: string;
+  patientRecord: any;
 }
 
 export interface VitalSign {
@@ -43,6 +53,17 @@ export interface PaginatedItems<T> {
   pageSize: number;
   count: number;
   data: T[];
+}
+
+export interface Examination {
+  id: string;
+  doctorId: string;
+  issueAt: string;
+  progressNote: string;
+  medicalServices: string;
+  prescription: string;
+  patientRecordId: string;
+  patientRecord: any;
 }
 
 export const PatientSchema = z.object({
@@ -69,4 +90,20 @@ export const VitalSignSchema = z.object({
   height: z.coerce.number(),
   weight: z.coerce.number(), // SOLUTION
   patientRecordId: z.string().optional(),
+});
+
+export const CareSheetSchema = z.object({
+  progressNote: z.string().min(1, { message: "Missing Progress Note" }),
+  careInstruction: z.string().min(1, { message: "Missing Care Instruction" }),
+  patientRecordId: z.string().optional(),
+  nurseId: z.string().optional(),
+});
+
+export const ExaminationSpeechSchema = z.object({
+  userId: z.string().optional(),
+  progressNote: z.string(),
+  medicalServices: z.string(),
+  prescription: z.string(),
+  patientRecordId: z.string().optional(),
+  issueAt: z.date().optional(),
 });

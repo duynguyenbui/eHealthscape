@@ -6,6 +6,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>eHealthscape.Identity.API</RootNamespace>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <WarningLevel>0</WarningLevel>
     </PropertyGroup>
 
     <ItemGroup>

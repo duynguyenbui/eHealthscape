@@ -6,9 +6,7 @@
       "src\\HealthRecord.API\\HealthRecord.API.csproj",
       "src\\Identity.API\\Identity.API.csproj",
       "src\\SpeechRecognition.API\\SpeechRecognition.API.csproj",
-      "src\\Mobile.Bff\\Mobile.Bff.csproj",
       "src\\ServiceDefaults\\ServiceDefaults.csproj",
-      "src\\WorkerService\\WorkerService.csproj"
     ]
   }
 }

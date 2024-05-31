@@ -5,7 +5,7 @@ import { HealthRecord } from "@/types";
 
 export async function getHealthRecordRelatedToPatient(
   patientId: string
-): Promise<HealthRecord> {
+): Promise<HealthRecord | null> {
   try {
     const response = await axiosInterceptorInstance.get(
       `${process.env.HEALTH_RECORD_API_URL}/api/healthrecords/related/to/patient/${patientId}?api-version=${process.env.HEALTH_RECORD_API_VERSION}`
@@ -15,6 +15,6 @@ export async function getHealthRecordRelatedToPatient(
     return data;
   } catch (err) {
     console.error(err);
-    throw new Error();
+    return null;
   }
 }

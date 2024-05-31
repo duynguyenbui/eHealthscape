@@ -31,7 +31,7 @@ const RecordSpeech: FC<TextProps> = ({}) => {
 
   return (
     <div>
-      <h1 className="lg:text-5xl font-bold underline decoration-wavy text-2xl">
+      <h1 className="lg:text-5xl font-bold underline text-2xl">
         Speech 2 text
       </h1>
       <p className=" mt-6 pb-32 mb-4 rounded-md bg-base-100 lg:w-96 lg:h-48 w-64 h-64">

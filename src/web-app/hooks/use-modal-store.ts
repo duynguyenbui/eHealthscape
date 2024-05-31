@@ -1,6 +1,9 @@
 import { create } from "zustand";
 
-export type ModalType = "delete-patient" | "create-vital-sign";
+export type ModalType =
+  | "delete-patient"
+  | "create-vital-sign"
+  | "create-care-sheet";
 
 interface Modal {
   type: ModalType | null;

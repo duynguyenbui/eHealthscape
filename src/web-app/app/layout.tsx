@@ -4,7 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/header";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import authOptions from "@/auth-options";
 import { Provider } from "@/components/providers/session-provider";
 import { Toaster } from "sonner";
 import { ModalProvider } from "@/components/providers/modal-provider";

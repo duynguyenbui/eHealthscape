@@ -19,7 +19,7 @@ app.UseDefaultOpenApi();
 //
 //     while (true)
 //     {
-//         await redisProducer.PublishAsync(new Speech()
+//         await redisProducer.PublishAsync(new ExaminationSpeech()
 //         {
 //             UserId = Guid.NewGuid().ToString(),
 //             Text = Guid.NewGuid() + ":::The patient reported feeling much better after the medication change",

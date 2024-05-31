@@ -1,11 +1,11 @@
-name: mobile-bff-svc.yml
+name: health-record-svc.yml
 on:
   workflow_dispatch:
   push:
     branches:
       - main
     paths:
-      - src/Mobile.Bff/**
+      - src/HealthRecord.API/**
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}"
-          file: src/Mobile.Bff/Dockerfile
+          file: src/HealthRecord.API/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/mobile-bff-svc:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/health-record-svc:latest

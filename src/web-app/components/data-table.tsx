@@ -61,14 +61,7 @@ export function DataTable<TData, TValue>({
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
-                    {cell.column.id !== "gender"
-                      ? flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )
-                      : cell.getValue() == "true"
-                      ? "Male"
-                      : "Female"}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>

@@ -13,12 +13,13 @@ const HealthRecordIdPage = async ({
   params: { patientId: string };
 }) => {
   const user = await currentUser();
-  console.log(user);
 
   if (!params.patientId) return <div>Nothing to show</div>;
 
   const patientRecord =
-    (await getHealthRecordRelatedToPatient(params.patientId)) || {};
+    (await getHealthRecordRelatedToPatient(params.patientId));
+
+  if (!patientRecord) return <div>Nothing to show</div>;
 
   return (
     <ScrollArea className="h-full">
@@ -27,8 +28,8 @@ const HealthRecordIdPage = async ({
           <h2 className="text-3xl font-bold tracking-tight">
             Health Record for{" "}
             <span className="text-xl text-muted-foreground">
-              {patientRecord.patient.firstName} {patientRecord.patient.lastName}{" "}
-              {", "}
+              {patientRecord.patient?.firstName}{" "}
+              {patientRecord.patient?.lastName} {", "}
             </span>
             <span className="text-sm text-muted-foreground">
               {patientRecord.id}
@@ -48,10 +49,16 @@ const HealthRecordIdPage = async ({
             <PatientOverview patientRecord={patientRecord} />
           </TabsContent>
           <TabsContent value="examinations" className="space-y-4">
-            <Examination />
+            <Examination
+              patientRecordId={patientRecord.id}
+              userId={user?.sub || ""}
+            />
           </TabsContent>
           <TabsContent value="careSheets" className="space-y-4">
-            <CareSheet />
+            <CareSheet
+              patientRecordId={patientRecord.id}
+              userId={user?.sub || ""}
+            />
           </TabsContent>
           <TabsContent value="vitalSigns" className="space-y-4">
             <PatientVitals patientRecordId={patientRecord.id} />

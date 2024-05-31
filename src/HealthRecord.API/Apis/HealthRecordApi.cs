@@ -66,7 +66,8 @@ public static class HealthRecordApi
         var total = await services.Context.CareSheets.Where(cs => cs.PatientRecordId == patientRecordId)
             .LongCountAsync();
 
-        var caresheets = await services.Context.CareSheets.Where(cs => cs.PatientRecordId == patientRecordId)
+        var caresheets = await services.Context.CareSheets
+            .Where(cs => cs.PatientRecordId == patientRecordId)
             .ToListAsync();
 
         return TypedResults.Ok(new PaginatedItems<CareSheet>(pageIndex, pageSize, total, caresheets));
@@ -319,9 +320,9 @@ public static class HealthRecordApi
         return TypedResults.NoContent();
     }
 
-    public static async Task<string> HelloWorld([AsParameters] HealthRecordServices services)
+    public static Task<string> HelloWorld([AsParameters] HealthRecordServices services)
     {
         services.Logger.LogInformation("Called API route 'api/healthrecord'");
-        return "Hello, world!";
+        return Task.FromResult("Hello, world!");
     }
 }

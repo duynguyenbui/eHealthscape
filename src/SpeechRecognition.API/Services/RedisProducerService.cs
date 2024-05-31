@@ -1,5 +1,3 @@
-using eHealthscape.SpeechRecognition.API.Model;
-
 namespace eHealthscape.SpeechRecognition.API.Services;
 
 public class RedisProducerService
@@ -16,13 +14,13 @@ public class RedisProducerService
         _connectionMultiplexer = ConnectionMultiplexer.Connect(connectionString);
     }
 
-    public async Task PublishAsync(Speech speech)
+    public async Task PublishAsync(ExaminationSpeech examinationSpeech)
     {
         var sub = _connectionMultiplexer.GetSubscriber();
 
         _logger.LogInformation("Producer running at: {time}", DateTimeOffset.Now);
         
-        var json = JsonSerializer.SerializeToUtf8Bytes(speech, SpeechSerializationContext.Default.Speech!);
+        var json = JsonSerializer.SerializeToUtf8Bytes(examinationSpeech, ExaminationSerializationContext.Default.ExaminationSpeech!);
         
         await sub.PublishAsync(_channel, json);
     }

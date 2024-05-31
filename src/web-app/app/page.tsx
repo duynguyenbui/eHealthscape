@@ -13,6 +13,8 @@ export default async function Home() {
             Hello {user?.name}, welcome to Health Record Service 🫠 🫠
           </h1>
           <span className="text-muted-foreground">{user.email}</span>
+          <br />
+          <span className="text-muted-foreground">{user.sub}</span>
         </>
       )}
       <div className="flex items-center h-full w-full mt-20">

@@ -49,28 +49,24 @@ export function CarouselSliding() {
       description: "Track patient progress.",
       content:
         "Add and update care sheets to maintain detailed records of the patient's progress over time.",
-      link: "/patients",
     },
     {
       title: "Add Examination",
       description: "Document treatment plans.",
       content:
         "Complete treatment forms to outline and document the patient's treatment plan, including medications and procedures.",
-      link: "/patients",
     },
     {
       title: "Add Vital Signs",
       description: "Add vital signs to the patient's",
       content:
         "Conduct a thorough health assessment to monitor and maintain your overall well-being. This includes checking vital signs, conducting necessary tests, and reviewing your medical history.",
-      link: "/patients",
     },
     {
       title: "Health Check-up",
       description: "Comprehensive health examination.",
       content:
         "Conduct a thorough health assessment to monitor and maintain your overall well-being. This includes checking vital signs, conducting necessary tests, and reviewing your medical history.",
-      link: "/health-check-up",
     },
   ];
 
@@ -93,9 +89,13 @@ export function CarouselSliding() {
                 <p>{card.content}</p>
               </CardContent>
               <CardFooter className="md:absolute bottom-0 left-0 w-full flex justify-between p-4 ">
-                <Link href={card.link}>
-                  <Button variant={variants[index] as any}>Proceed</Button>
-                </Link>
+                {card.link ? (
+                  <Link href={card.link}>
+                    <Button variant={variants[index] as any}>Proceed</Button>
+                  </Link>
+                ) : (
+                  ""
+                )}
               </CardFooter>
             </Card>
           </CarouselItem>

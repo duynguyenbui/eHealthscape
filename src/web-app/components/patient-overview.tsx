@@ -18,37 +18,38 @@ export const PatientOverview = ({
           <div>
             <h4 className="text-sm font-medium text-blue-500">Full Name</h4>
             <p className="text-2xl font-bold text-blue-700">
-              {patientRecord.patient.firstName} {patientRecord.patient.lastName}
+              {patientRecord.patient?.firstName}{" "}
+              {patientRecord.patient?.lastName}
             </p>
           </div>
           <div>
             <h4 className="text-sm font-medium text-blue-500">Date of Birth</h4>
             <p className="text-2xl font-bold text-blue-700">
-              {formatDate(patientRecord.patient.dateOfBirth)}
+              {formatDate(patientRecord.patient?.dateOfBirth)}
             </p>
           </div>
           <div>
             <h4 className="text-sm font-medium text-blue-500">Gender</h4>
             <p className="text-2xl font-bold text-blue-700">
-              {patientRecord.patient.gender ? "Male" : "Female"}
+              {patientRecord.patient?.gender ? "Male" : "Female"}
             </p>
           </div>
           <div>
             <h4 className="text-sm font-medium text-blue-500">Blood Type</h4>
             <p className="text-2xl font-bold text-blue-700">
-              {patientRecord.patient.bloodType}
+              {patientRecord.patient?.bloodType}
             </p>
           </div>
           <div>
             <h4 className="text-sm font-medium text-blue-500">Address</h4>
             <p className="text-md font-bold text-blue-700">
-              {patientRecord.patient.address}
+              {patientRecord.patient?.address}
             </p>
           </div>
           <div>
             <h4 className="text-sm font-medium text-blue-500">Phone Number</h4>
             <p className="text-md font-bold text-blue-700">
-              {patientRecord.patient.phoneNumber}
+              {patientRecord.patient?.phoneNumber}
             </p>
           </div>
         </CardContent>
@@ -81,4 +82,3 @@ export const PatientOverview = ({
     </>
   );
 };
-
