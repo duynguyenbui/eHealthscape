@@ -1,11 +1,11 @@
 name: speech-recognition-svc.yml
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - src/SpeechRecognition.API/**
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - src/SpeechRecognition.API/**
 jobs:
   build:
     runs-on: ubuntu-latest

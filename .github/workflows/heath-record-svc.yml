@@ -1,11 +1,11 @@
 name: health-record-svc.yml
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - src/HealthRecord.API/**
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - src/HealthRecord.API/**
 jobs:
   build:
     runs-on: ubuntu-latest
