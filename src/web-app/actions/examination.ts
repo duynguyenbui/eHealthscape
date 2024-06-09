@@ -20,20 +20,8 @@ export async function getExaminationsRelatedToPatientRecord(
   else return null;
 }
 
-export async function createExamination(
-  values: z.infer<typeof ExaminationSpeechSchema>
-) {
-  console.log(values);
-
-  const validatedFields = ExaminationSpeechSchema.safeParse(values);
-
-  if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
-  }
-
-  if (!validatedFields.data?.patientRecordId || !validatedFields.data.userId) {
-    return { error: "Missing Data" };
-  }
+export async function createExamination(values: any) {
+  if (!values) return { error: "Missing values" };
 
   const res = await axiosInterceptorInstance
     .post(

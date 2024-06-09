@@ -59,7 +59,7 @@ public static partial class Extensions
             });
 
             // Add a redirect from the root of the app to the swagger endpoint
-            app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
+            // app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
         }
 
         return app;

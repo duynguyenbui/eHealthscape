@@ -16,7 +16,7 @@ public static partial class Extensions
     public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
     {
         builder.AddBasicServiceDefaults();
-
+        
         return builder;
     }
 
@@ -24,8 +24,10 @@ public static partial class Extensions
     {
         // Default health checks assume the event bus and self health checks
         builder.AddDefaultHealthChecks();
-
         builder.ConfigureOpenTelemetry();
+        
+        builder.Services.AddProblemDetails();
+        builder.Services.AddExceptionHandler<ExceptionHandler>();
 
         return builder;
     }
@@ -56,6 +58,9 @@ public static partial class Extensions
 
     public static WebApplication MapDefaultEndpoints(this WebApplication app)
     {
+        // Exception Handler must be the first middleware
+        app.UseExceptionHandler();
+
         // Uncomment the following line to enable the Prometheus endpoint (requires the OpenTelemetry.Exporter.Prometheus.AspNetCore package)
         app.MapPrometheusScrapingEndpoint();
 

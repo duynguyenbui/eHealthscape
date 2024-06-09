@@ -1,5 +1,7 @@
 using Duende.IdentityServer;
 
+using eHealthscape.ServiceDefaults;
+
 using Identity.API.Data;
 using Identity.API.Models;
 using Identity.API.Services;
@@ -25,7 +27,7 @@ internal static class HostingExtensions
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
-        
+
         builder.Services
             .AddIdentityServer(options =>
             {
@@ -73,6 +75,8 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        app.MapDefaultEndpoints();
+
         app.UseSerilogRequestLogging();
 
         if (app.Environment.IsDevelopment())

@@ -2,13 +2,17 @@ global:
   scrape_interval: 1s # makes for a good demo
 
 scrape_configs:
+  - job_name: 'speech-recognition'
+    static_configs:
+      - targets: [ 'host.docker.internal:5003' ]
+
   - job_name: 'health-records'
     static_configs:
-      - targets: ['host.docker.internal:5002']
+      - targets: [ 'host.docker.internal:5002' ]
 
   - job_name: 'identity-server'
     scheme: https
     tls_config:
       insecure_skip_verify: true
     static_configs:
-      - targets: ['host.docker.internal:5001']
+      - targets: [ 'host.docker.internal:5001' ]

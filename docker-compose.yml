@@ -12,6 +12,47 @@
     image: redis
     ports:
       - "6379:6379"
+#  healthrecord.api:
+#    image: healthrecord.api
+#    build:
+#      context: .
+#      dockerfile: src/HealthRecord.API/Dockerfile
+#    ports:
+#      - "5002:8080"
+#    environment:
+#      - ConnectionStrings__Database=Host=postgres.db;Port=5432;Database=HealthRecordDB;Username=postgres;Password=postgrespw
+#      - ConnectionStrings__Redis=redis.db
+#      - OpenApi__Endpoint__Name=HealthRecord.API V1
+#      - OpenApi__Document__Description=The Health Record Service HTTP API. This is a Data-Driven/CRUD microservice sample
+#      - OpenApi__Document__Title=eHealthscape - Health Record HTTP API
+#      - OpenApi__Document__Version=v1
+#      - OpenApi__Auth__ClientId=healthrecordsswaggerui
+#      - OpenApi__Auth__AppName=HealthRecord Swagger UI
+#      - Identity__Audience=healthrecords
+#      - Identity__Scopes__healthrecords=HealthRecord API
+#      - Identity__Url=https://identity:8080
+#    depends_on:
+#      - redis.db
+#      - postgres.db
+#  identity.api:
+#    image: identity.api
+#    build:
+#      context: .
+#      dockerfile: src/Identity.API/Dockerfile
+#    ports:
+#      - "5001:8080"
+#    environment:
+#      - Serilog__MinimumLevel__Default=Debug
+#      - Serilog__MinimumLevel__Override__Microsoft=Warning
+#      - Serilog__MinimumLevel__Override__Microsoft.Hosting.Lifetime=Information
+#      - Serilog__MinimumLevel__Override__Microsoft.AspNetCore.Authentication=Debug
+#      - Serilog__MinimumLevel__Override__System=Warning
+#      - ConnectionStrings__Database=Host=postgres.db;Port=5432;Database=IdentityDB;Username=postgres;Password=postgrespw
+#      - HealthRecordApiClient=http://healthrecord.api:5002
+#      - SpeechApiClient=http://localhost:5003
+#      - WebAppClient=http://localhost:3000
+#    depends_on:
+#      - postgres.db
   prometheus:
     image: prom/prometheus
     volumes:
