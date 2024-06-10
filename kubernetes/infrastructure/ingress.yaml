@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-svc
+  labels:
+    name: ingress-svc
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.ehealthscape.com
+      secretName: ehealthscape-app-tls
+  rules:
+    - host: api.ehealthscape.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: bff-clusterip
+                port:
+                  number: 8080

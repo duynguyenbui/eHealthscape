@@ -7,9 +7,9 @@ public static class HealthRecordApi
     {
         var api = app.MapGroup("api").HasApiVersion(1.0);
 
-        var doctor = api.MapGroup("").RequireAuthorization(builder => builder.RequireRole("Doctor"));
-        var nurse = api.MapGroup("").RequireAuthorization(builder => builder.RequireRole("Nurse"));
-        
+        // var doctor = api.MapGroup("").RequireAuthorization(builder => builder.RequireRole("Doctor"));
+        // var nurse = api.MapGroup("").RequireAuthorization(builder => builder.RequireRole("Nurse"));
+
         // Modifying patients
         api.MapPost("/patients", CreatePatient);
         api.MapPut("/patients", UpdatePatient);
@@ -52,7 +52,7 @@ public static class HealthRecordApi
         api.MapPost("/healthrecords/caresheets", CreateCareSheet);
 
         // Check info
-        api.MapGet("/hello-world", HelloWorld).AllowAnonymous();
+        api.MapGet("/testz", () => "Hello, from HealthRecord.API!").AllowAnonymous();
 
         return api;
     }
@@ -101,7 +101,7 @@ public static class HealthRecordApi
             CareInstruction = create.CareInstruction,
             PatientRecordId = create.PatientRecordId,
             PatientRecord = patientRecord,
-            NurseId = create.NurseId, //  TODO: Get from claim
+            NurseId = Guid.NewGuid(), //  TODO: Get from claim
         };
 
         var entry = await services.Context.CareSheets.AddAsync(caresheet);
@@ -123,7 +123,7 @@ public static class HealthRecordApi
             MedicalServices = create.MedicalServices,
             Prescription = create.Prescription,
             PatientRecordId = create.PatientRecordId,
-            DoctorId = create.DoctorId, //  TODO: Get from claim
+            DoctorId = Guid.NewGuid(), //  TODO: Get from claim
             PatientRecord = patientRecord
         };
 
@@ -318,11 +318,5 @@ public static class HealthRecordApi
         await services.Context.SaveChangesAsync();
 
         return TypedResults.NoContent();
-    }
-
-    public static Task<string> HelloWorld([AsParameters] HealthRecordServices services)
-    {
-        services.Logger.LogInformation("Called API route 'api/healthrecord'");
-        return Task.FromResult("Hello, world!");
     }
 }

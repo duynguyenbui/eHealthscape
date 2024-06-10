@@ -1,4 +1,4 @@
-name: speech-recognition-svc.yml
+name: bff-svc.yml
 on:
   workflow_dispatch:
 #  push:
@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}"
-          file: src/SpeechRecognition.API/Dockerfile
+          file: src/BFF/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/speech-svc:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/bff-svc:latest

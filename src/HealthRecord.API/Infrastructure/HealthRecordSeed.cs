@@ -1,15 +1,9 @@
 namespace eHealthscape.HealthRecord.API.Infrastructure;
 
-public class HealthRecordSeed(IWebHostEnvironment env) : IDbSeeder<HealthRecordContext>
+public class HealthRecordSeed(IWebHostEnvironment env) : IDbSeeder<DbContext>
 {
-    public Task SeedAsync(HealthRecordContext context)
+    public Task SeedAsync(DbContext dbContext)
     {
-        if (env.IsDevelopment())
-        {
-            // TODO: Add seed data
-            return Task.CompletedTask;
-        }
-
         return Task.CompletedTask;
     }
 }

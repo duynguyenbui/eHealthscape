@@ -1,11 +1,11 @@
-name: health-record-svc.yml
+name: speech-svc.yml
 on:
   workflow_dispatch:
 #  push:
 #    branches:
 #      - main
 #    paths:
-#      - src/HealthRecord.API/**
+#      - src/SpeechRecognition.API/**
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: "{{defaultContext}}"
-          file: src/HealthRecord.API/Dockerfile
+          file: src/SpeechRecognition.API/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/health-record-svc:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/speech-svc:latest

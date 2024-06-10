@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bff-svc
+  labels:
+    app: bff-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bff-svc
+  template:
+    metadata:
+      name: bff-svc
+      labels:
+        app: bff-svc
+    spec:
+      containers:
+        - name: bff-svc
+          image: bff-svc:latest
+          imagePullPolicy: Never
+          env:
+            - name: ReverseProxy__Clusters__speech__Destinations__speechApi__Address
+              value: http://speech-clusterip:8080
+            - name: ReverseProxy__Clusters__healthrecords__Destinations__healthrecordApi__Address
+              value: http://healthrc-clusterip:8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bff-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: bff-svc
+  ports:
+    - port: 8080
+      targetPort: 8080

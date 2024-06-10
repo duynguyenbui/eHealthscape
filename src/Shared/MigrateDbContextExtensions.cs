@@ -1,4 +1,5 @@
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Microsoft.AspNetCore.Hosting;
 
@@ -21,7 +22,15 @@ internal static class MigrateDbContextExtensions
     {
         services.AddScoped<IDbSeeder<TContext>, TDbSeeder>();
         return services.AddMigration<TContext>((context, sp) =>
-            sp.GetRequiredService<IDbSeeder<TContext>>().SeedAsync(context));
+        {
+            // REVIEW: You should delete this condition when service run in development rather than kubernetes 
+            if (!context.Database.GetService<IRelationalDatabaseCreator>().Exists())
+            {
+                context.Database.EnsureCreated();
+            }
+
+            return sp.GetRequiredService<IDbSeeder<TContext>>().SeedAsync(context);
+        });
     }
 
     private static async Task MigrateDbContextAsync<TContext>(this IServiceProvider services,

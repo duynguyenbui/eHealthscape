@@ -8,7 +8,12 @@ public static class SpeechRecognitionApi
     {
         var api = app.MapGroup("api").HasApiVersion(1.0);
         api.MapPost("/speech-completion", SpeechCompletion);
-
+        api.MapGet("/testz", () => "Hello, from Speech Recognition API");
+        api.MapGet("/error", () =>
+        {
+            throw new NotImplementedException();
+        });
+        
         return api;
     }
 
@@ -16,12 +21,12 @@ public static class SpeechRecognitionApi
         [AsParameters] SpeechRecognitionServices services, ExaminationSpeech? speech)
     {
         if (speech == null) return TypedResults.BadRequest("Something went wrong!!");
-        
+
         // TODO: Implement AI for completion
         await services.SpeechRecognitionRepository.SaveSpeechTextAsync(speech);
-        
+
         await services.RedisProducerService.PublishAsync(speech);
-        
+
         return TypedResults.Ok();
     }
 }
