@@ -1,5 +1,3 @@
-
-
 public static class Extensions
 {
     /// <summary>
@@ -16,6 +14,10 @@ public static class Extensions
         builder.Services.AddMigration<HealthRecordContext, HealthRecordSeed>();
 
         builder.AddDefaultAuthentication();
+
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy("DoctorPolicy", pBuilder => pBuilder.RequireRole("Doctor"))
+            .AddPolicy("NursePolicy", pBuilder => pBuilder.RequireRole("Nurse"));
 
         builder.Services.AddHostedService<Consumer>();
     }

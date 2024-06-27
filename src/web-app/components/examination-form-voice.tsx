@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import VoiceInput from "./voice-input";
-import { Button } from "./ui/button";
-import { createExamination } from "@/actions/examination";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { createExamination } from "@/actions/examination";
+import VoiceInput from "./voice-input";
+import { Button } from "./ui/button";
 
 export const ExaminationFormVoice = ({
   userId,
@@ -34,11 +34,16 @@ export const ExaminationFormVoice = ({
       .then((res) => {
         if (res?.error) {
           toast.error(res.error);
+        } else if (res?.success) {
+          toast.success(res.success);
+        } else {
+          toast.error("Something went wrong");
         }
-
-        return toast.success("Created successfully");
       })
-      .catch((err) => toast.error("Something went wrong"))
+      .catch((err) => {
+        console.error("Error:", err);
+        toast.error("Something went wrong");
+      })
       .finally(() => {
         setProgressNote("");
         setMedicalServices("");

@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 using eHealthscape.SpeechRecognition.API.Services;
 
 namespace eHealthscape.SpeechRecognition.API.Extensions;
@@ -8,11 +10,16 @@ public static class Extensions
     {
         builder.AddDefaultAuthentication();
 
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy("DoctorPolicy", pBuilder => pBuilder.RequireRole("Doctor"))
+            .AddPolicy("NursePolicy", pBuilder => pBuilder.RequireRole("Nurse"));
+
         builder.Services.AddSingleton<IConnectionMultiplexer>(
             ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!));
 
         builder.Services.AddScoped<ISpeechRecognitionRepository, RedisSpeechRecognitionRepository>();
         builder.Services.AddScoped<RedisProducerService>();
+
 
         if (builder.Configuration.GetSection("AI").Exists())
         {

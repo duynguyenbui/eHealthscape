@@ -7,13 +7,10 @@ public static class HealthRecordApi
     {
         var api = app.MapGroup("api").HasApiVersion(1.0);
 
-        // var doctor = api.MapGroup("").RequireAuthorization(builder => builder.RequireRole("Doctor"));
-        // var nurse = api.MapGroup("").RequireAuthorization(builder => builder.RequireRole("Nurse"));
-
         // Modifying patients
         api.MapPost("/patients", CreatePatient);
         api.MapPut("/patients", UpdatePatient);
-        api.MapDelete("/patients/{patientId:Guid}", DeletePatient);
+        api.MapDelete("/patients/{patientId:Guid}", DeletePatient).RequireAuthorization("DoctorPolicy");
 
         // Querying patient
         api.MapGet("/patients/all", GetPatients);
@@ -52,7 +49,7 @@ public static class HealthRecordApi
         api.MapPost("/healthrecords/caresheets", CreateCareSheet);
 
         // Check info
-        api.MapGet("/testz", () => "Hello, from HealthRecord.API!").AllowAnonymous();
+        api.MapGet("/testz", () => "Hello, from HealthRecord.API!");
         api.MapGet("/error", context => throw new Exception()).AllowAnonymous();
 
         return api;

@@ -8,13 +8,13 @@ public class Consumer : BackgroundService
     private readonly ILogger<Consumer> _logger;
 
     private readonly ConnectionMultiplexer _connectionMultiplexer;
-
     private IServiceScopeFactory _serviceScopeFactory;
 
-    private readonly string _channel = "speeches";
+    private string _channel;
 
     public Consumer(IConfiguration configuration, ILogger<Consumer> logger, IServiceScopeFactory serviceScopeFactory)
     {
+        _channel = configuration.GetRequiredValue("QueueName");
         _logger = logger;
         _serviceScopeFactory = serviceScopeFactory;
 
@@ -72,6 +72,8 @@ public class Consumer : BackgroundService
 
                 _logger.LogInformation("Examination saved successfully for PatientRecordId: {PatientRecordId}",
                     speech.PatientRecordId);
+
+                await Task.Delay(1000, stoppingToken);
             }
             catch (Exception ex)
             {

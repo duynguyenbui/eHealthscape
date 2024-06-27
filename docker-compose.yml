@@ -6,8 +6,6 @@
 services:
   postgres-db:
     image: ankane/pgvector:latest
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgrespw
@@ -17,8 +15,6 @@ services:
       custom:
   redis-db:
     image: redis
-    ports:
-      - "6379:6379"
     networks:
       custom:
   identity-svc:
@@ -34,14 +30,31 @@ services:
       custom:
         ipv4_address: 10.5.0.200
     restart: unless-stopped
-  healthrc-svc:
+  healthrc-svc-1:
     image: duynguyenbui/healthrc-svc:latest
     pull_policy: missing
     environment:
       - ConnectionStrings__Database=Host=postgres-db;Port=5432;Database=HealthRecordDB;Username=postgres;Password=postgrespw
       - ConnectionStrings__Redis=redis-db:6379
-    ports:
-      - 5002:8080
+      - QueueName=speeches_1
+      - Identity__Url=http://identity-svc
+      - Identity__Audience=identity-svc/resources
+      - Identity__Scopes__healthrecords="HealthRecord API"
+    depends_on:
+      - postgres-db
+      - redis-db
+    networks:
+      custom:
+  healthrc-svc-2:
+    image: duynguyenbui/healthrc-svc:latest
+    pull_policy: missing
+    environment:
+      - ConnectionStrings__Database=Host=postgres-db;Port=5432;Database=HealthRecordDB;Username=postgres;Password=postgrespw
+      - ConnectionStrings__Redis=redis-db:6379
+      - QueueName=speeches_2
+      - Identity__Url=http://identity-svc
+      - Identity__Audience=identity-svc/resources
+      - Identity__Scopes__healthrecords="HealthRecord API"
     depends_on:
       - postgres-db
       - redis-db
@@ -52,24 +65,25 @@ services:
     pull_policy: missing
     environment:
       - ConnectionStrings__Redis=redis-db:6379
-    ports:
-      - 5003:8080
+      - Prefix=speeches_
+      - NumberOfConsumers=2
+      - Identity__Url=http://identity-svc
+      - Identity__Audience=identity-svc/resources
+      - Identity__Scopes__speech="Speech Recognition API"
     depends_on:
       - redis-db
-      - healthrc-svc
     networks:
       custom:
   bff-svc:
     image: duynguyenbui/bff-svc:latest
     pull_policy: missing
     environment:
-      - ReverseProxy__Clusters__healthrecords__Destinations__healthrecordApi__Address=http://healthrc-svc:8080
+      - ReverseProxy__Clusters__healthrecords__LoadBalancingPolicy=RoundRobin
+      - ReverseProxy__Clusters__healthrecords__Destinations__destination1__Address=http://healthrc-svc-1:8080
+      - ReverseProxy__Clusters__healthrecords__Destinations__destination2__Address=http://healthrc-svc-2:8080
       - ReverseProxy__Clusters__speech__Destinations__speechApi__Address=http://speech-svc:8080
       - ASPNETCORE_URLS=http://+:80
       - VIRTUAL_HOST=api.ehealthscape.com
-    depends_on:
-      - healthrc-svc
-      - speech-svc
     networks:
       custom:
   web-app:
@@ -78,7 +92,7 @@ services:
     volumes:
       - /var/lib/web/data
     extra_hosts:
-      - id.ehealthscape.com:10.5.0.200 
+      - id.ehealthscape.com:10.5.0.200
     environment:
       - NEXTAUTH_SECRET=ra9YcqAz13Out0Mw3jVtQvMcL0EgOEIyCYKtYnwWONg=
       - NEXTAUTH_URL=http://app.ehealthscape.com
@@ -94,6 +108,31 @@ services:
       - VIRTUAL_PORT=3000
     networks:
       custom:
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./src/prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      custom:
+  grafana:
+    image: grafana/grafana
+    user: "472"
+    depends_on:
+      - prometheus
+    volumes:
+      - ./src/grafana/config:/etc/grafana
+      - ./src/grafana/dashboards/:/var/lib/grafana/dashboards
+    environment:
+      - GF_SERVER_HTTP_PORT=2345
+      - VIRTUAL_HOST=monitor.ehealthscape.com
+      - VIRTUAL_PORT=2345
+    networks:
+      custom:
   nginx-proxy:
     image: nginxproxy/nginx-proxy
     ports:
@@ -103,7 +142,7 @@ services:
       custom:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./devcerts:/etc/nginx/certs
+      - ./certs:/etc/nginx/certs
 volumes:
   postgres-data:
     driver: local

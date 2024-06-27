@@ -21,22 +21,21 @@ export async function getExaminationsRelatedToPatientRecord(
 export async function createExamination(values: any) {
   if (!values) return { error: "Missing values" };
 
-  const res = await axiosInterceptorInstance
-    .post(
-      `${process.env
-        .SPEECH_RECOGNITION_API_URL!}/speech-completion?api-version=${process
-        .env.SPEECH_RECOGNITION_API_VERSION!}`,
+  try {
+    const res = await axiosInterceptorInstance.post(
+      `${process.env.SPEECH_RECOGNITION_API_URL}/speech-completion?api-version=${process.env.SPEECH_RECOGNITION_API_VERSION}`,
       values
-    )
-    .then((res) => {
-      if (res.status === 200) {
-        return { success: "Created successfully" };
-      }
+    );
 
+    if (res.status === 403) {
+      return { error: "Forbidden" };
+    } else if (res.status === 200) {
+      return { success: "Created successfully" };
+    } else {
       return { error: "Something went wrong" };
-    })
-    .catch((err) => {
-      console.log(err);
-      return { error: "Encountering error when creating data" };
-    });
+    }
+  } catch (err) {
+    console.error("Encountering error when creating data:", err);
+    return { error: "Something went wrong due to an error" };
+  }
 }
