@@ -23,7 +23,7 @@ export async function createCareSheet(values: z.infer<typeof CareSheetSchema>) {
   const res = await axiosInterceptorInstance
     .post(
       `${process.env
-        .HEALTH_RECORD_API_URL!}/api/healthrecords/caresheets?api-version=${process
+        .HEALTH_RECORD_API_URL!}/healthrecords/caresheets?api-version=${process
         .env.HEALTH_RECORD_API_VERSION!}`,
       values
     )
@@ -49,7 +49,7 @@ export async function getCareSheetRelatedToPatientRecordId(
 
   try {
     const res = await axiosInterceptorInstance.get(
-      `${process.env.HEALTH_RECORD_API_URL}/api/healthrecords/caresheets/related/to/${patientRecordId}?api-version=${process.env.HEALTH_RECORD_API_VERSION}`
+      `${process.env.HEALTH_RECORD_API_URL}/healthrecords/caresheets/related/to/${patientRecordId}?api-version=${process.env.HEALTH_RECORD_API_VERSION}`
     );
     return res.data as PaginatedItems<CareSheet>;
   } catch (error) {

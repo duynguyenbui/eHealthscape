@@ -53,6 +53,7 @@ public static class HealthRecordApi
 
         // Check info
         api.MapGet("/testz", () => "Hello, from HealthRecord.API!").AllowAnonymous();
+        api.MapGet("/error", context => throw new Exception()).AllowAnonymous();
 
         return api;
     }

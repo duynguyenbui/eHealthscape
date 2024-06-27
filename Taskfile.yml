@@ -1,0 +1,65 @@
+version: '3'
+
+tasks:
+  # Docker Environment
+  build:
+    cmds:
+      - docker build -t duynguyenbui/web-app:latest -f src/web-app/Dockerfile .
+      - docker build -t duynguyenbui/speech-svc:latest -f src/SpeechRecognition.API/Dockerfile .
+      - docker build -t duynguyenbui/healthrc-svc:latest -f src/HealthRecord.API/Dockerfile .
+      - docker build -t duynguyenbui/bff-svc:latest -f src/BFF/Dockerfile .
+      - docker build -t duynguyenbui/identity-svc:latest -f src/Identity.API/Dockerfile .
+    desc: "Build all docker images"
+  up:
+    cmd: docker-compose up -d
+    desc: "Run docker compose version for eHealthscape"
+  down:
+    cmd: docker-compose down
+    desc: "Release docker resources"
+  # Kubernetes
+  create-namespace:
+    cmds:
+      - kubectl create namespace ehealthscape
+    desc: "Create the ehealthscape namespace"
+  
+  install-services:
+    cmds:
+      - helm upgrade --install postgres ./kubernetes/charts/postgres/ --namespace ehealthscape
+      - helm upgrade --install redis ./kubernetes/charts/redis/ --namespace ehealthscape
+      - helm upgrade --install speech ./kubernetes/charts/speech/ --namespace ehealthscape
+      - helm upgrade --install healthrc ./kubernetes/charts/healthrc/ --namespace ehealthscape
+      - helm upgrade --install bff ./kubernetes/charts/bff/ --namespace ehealthscape
+    desc: "Install the main services using Helm"
+  
+  create-tls-secret:
+    cmds:
+      - kubectl create secret tls ehealthscape-app-tls --key ./kubernetes/certs/server.key --cert ./kubernetes/certs/server.crt --namespace ehealthscape
+    desc: "Create TLS secret for the application"
+  
+  install-ingress:
+    cmds:
+      - kubectl apply -f ./kubernetes/charts/nginx/deploy.yaml
+    desc: "Upgrade and install ingress-nginx"
+
+  apply-ingress:
+    cmds:
+      - kubectl apply -f ./kubernetes/charts/nginx/ingress.yaml --namespace ehealthscape
+    desc: "Apply the ingress configuration"
+
+  run-k8s:
+    deps:
+      - create-namespace
+      - create-tls-secret
+      - install-services
+      - install-ingress
+      - apply-ingress
+    desc: "Run all tasks in sequence"
+  
+  release-resources:
+    cmds:
+      - kubectl delete all --all --namespace ehealthscape
+      - kubectl delete -f ./kubernetes/charts/nginx/deploy.yaml
+      - kubectl delete namespace ehealthscape
+      - kubectl delete namespace ingress-nginx
+    desc: "Release all resources in the ehealthscape and ingress-nginx namespaces"
+  

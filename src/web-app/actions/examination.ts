@@ -1,8 +1,6 @@
 "use server";
 
 import axiosInterceptorInstance from "@/axios-interceptor-instance";
-import { ExaminationSpeechSchema } from "@/types";
-import { z } from "zod";
 
 export async function getExaminationsRelatedToPatientRecord(
   patientRecordId: string
@@ -10,7 +8,7 @@ export async function getExaminationsRelatedToPatientRecord(
   const data = await axiosInterceptorInstance
     .get(
       `${process.env
-        .HEALTH_RECORD_API_URL!}/api/healthrecords/examinations/related/to/${patientRecordId}?api-version=${process
+        .HEALTH_RECORD_API_URL!}/healthrecords/examinations/related/to/${patientRecordId}?api-version=${process
         .env.HEALTH_RECORD_API_VERSION!}`
     )
     .then((res) => res.data)
@@ -26,7 +24,7 @@ export async function createExamination(values: any) {
   const res = await axiosInterceptorInstance
     .post(
       `${process.env
-        .SPEECH_RECOGNITION_API_URL!}/api/speech-completion?api-version=${process
+        .SPEECH_RECOGNITION_API_URL!}/speech-completion?api-version=${process
         .env.SPEECH_RECOGNITION_API_VERSION!}`,
       values
     )

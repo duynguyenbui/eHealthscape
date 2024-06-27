@@ -39,7 +39,6 @@ public class Consumer : BackgroundService
 
                 _logger.LogInformation("Message received in {Channel}: {Speech}", channel, speech.ProgressNote);
 
-                // Check if role is not a doctor or PatientRecordId is empty
                 if (string.IsNullOrEmpty(speech.UserId) || string.IsNullOrEmpty(speech.PatientRecordId))
                 {
                     _logger.LogWarning("Invalid message data: UserId or PatientRecordId is null or empty.");

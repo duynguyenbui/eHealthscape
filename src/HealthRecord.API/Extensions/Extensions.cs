@@ -15,7 +15,7 @@ public static class Extensions
         // REVIEW: This is done for development ease but shouldn't be here in production
         builder.Services.AddMigration<HealthRecordContext, HealthRecordSeed>();
 
-        // builder.AddDefaultAuthentication();
+        builder.AddDefaultAuthentication();
 
         builder.Services.AddHostedService<Consumer>();
     }

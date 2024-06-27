@@ -20,6 +20,14 @@ export const columns: ColumnDef<Patient>[] = [
   {
     accessorKey: "gender",
     header: "Gender",
+    cell: ({ row }) => {
+      const patient = row.original;
+      if (patient.gender) {
+        return "Male";
+      } else {
+        return "Female";
+      }
+    },
   },
   {
     accessorKey: "bloodType",

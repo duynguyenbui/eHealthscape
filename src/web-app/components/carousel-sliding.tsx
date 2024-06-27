@@ -22,8 +22,8 @@ import Link from "next/link";
 
 export function CarouselSliding() {
   const variants = [
-    "default",
     "premium",
+    "default",
     "secondary",
     "destructive",
     "outline",
@@ -42,7 +42,6 @@ export function CarouselSliding() {
       description: "Access comprehensive health records related to patients.",
       content:
         "Review patients' medical histories, current medications, and previous diagnoses to provide optimal care.",
-      link: "/healthrecords",
     },
     {
       title: "Add Care Sheet",
@@ -82,7 +81,7 @@ export function CarouselSliding() {
           <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4">
             <Card className="md:w-[300px] md:h-[400px] relative">
               <CardHeader>
-                <CardTitle>{card.title}</CardTitle>
+                <CardTitle className="font-semibold">{card.title}</CardTitle>
                 <CardDescription>{card.description}</CardDescription>
               </CardHeader>
               <CardContent>
@@ -102,7 +101,7 @@ export function CarouselSliding() {
         ))}
       </CarouselContent>
       <CarouselPrevious />
-      <CarouselNext />
+      <CarouselNext className="mr-3"/>
     </Carousel>
   );
 }

@@ -9,7 +9,6 @@ var app = builder.Build();
 
 app.MapDefaultEndpoints();
 app.UseDefaultOpenApi();
-app.NewVersionedApi().MapSpeechRecognitionV1(); //.RequireAuthorization();
-
+app.NewVersionedApi().MapSpeechRecognitionV1().AllowAnonymous();
 
 app.Run();

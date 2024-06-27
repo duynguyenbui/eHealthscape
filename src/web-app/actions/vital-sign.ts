@@ -20,7 +20,7 @@ export async function createVitalSign(values: z.infer<typeof VitalSignSchema>) {
   const res = await axiosInterceptorInstance
     .post(
       `${process.env
-        .HEALTH_RECORD_API_URL!}/api/healthrecords/vitalsigns?api-version=${process
+        .HEALTH_RECORD_API_URL!}/healthrecords/vitalsigns?api-version=${process
         .env.HEALTH_RECORD_API_VERSION!}`,
       values
     )
@@ -41,7 +41,7 @@ export async function getVitalSignsByHealthRecordId(
   const res = await axiosInterceptorInstance
     .get(
       `${process.env
-        .HEALTH_RECORD_API_URL!}/api/healthrecords/vitalsigns/${healthRecordId}?api-version=${process
+        .HEALTH_RECORD_API_URL!}/healthrecords/vitalsigns/${healthRecordId}?api-version=${process
         .env.HEALTH_RECORD_API_VERSION!}`
     )
     .then((res) => {

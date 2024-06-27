@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-svc
+  labels:
+    app: {{ .Release.Name }}-svc
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-svc
+  template:
+    metadata:
+      name: {{ .Release.Name }}-svc
+      labels:
+        app: {{ .Release.Name }}-svc
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-svc
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: ConnectionStrings__Database
+              value: {{ .Values.env.databaseConnection }}
+            - name: ConnectionStrings__Redis
+              value: {{ .Values.env.redisConnection }}

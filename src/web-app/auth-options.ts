@@ -14,8 +14,10 @@ const authOptions: NextAuthOptions = {
       id: "id-server",
       clientId: process.env.DUENDE_IDS6_ID!,
       clientSecret: process.env.DUENDE_IDS6_SECRET!,
-      issuer: process.env.DUENDE_IDS6_ISSUER!,
-      authorization: { params: { scope: "openid profile healthrecords" } },
+      issuer: process.env.DUENDE_IDS6_ISSUER! || "https://id.ehealthscape.com",
+      authorization: {
+        params: { scope: "openid profile healthrecords speech" },
+      },
       idToken: true,
     }),
   ],

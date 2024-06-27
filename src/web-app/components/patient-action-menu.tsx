@@ -33,8 +33,8 @@ export const ActionMenu = ({ patient }: { patient: Patient }) => {
         >
           Copy patient ID
         </DropdownMenuItem>
-        <Link href={`/healthrecords/${patient.id}`}>
-          <DropdownMenuItem>View health records</DropdownMenuItem>
+        <Link href={`/patients/${patient.id}`}>
+          <DropdownMenuItem>View patient details</DropdownMenuItem>
         </Link>
 
         <DropdownMenuSeparator />

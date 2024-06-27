@@ -5,8 +5,7 @@ import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { MicIcon, Voicemail } from "lucide-react";
-import { IconMicrophone } from "./icon-microphone";
+import { MicIcon } from "lucide-react";
 
 interface VoiceInputProps {
   label: string;
@@ -26,12 +25,12 @@ const VoiceInput: React.FC<VoiceInputProps> = ({ label, value, onChange }) => {
     recognition.continuous = false;
     recognition.interimResults = false;
 
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
       onChange(transcript);
     };
 
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+    recognition.onerror = (event: any) => {
       console.error("Speech recognition error:", event.error);
     };
 

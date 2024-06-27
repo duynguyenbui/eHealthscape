@@ -24,8 +24,8 @@ export async function createPatient(values: z.infer<typeof PatientSchema>) {
 
   const res = await axiosInterceptorInstance
     .post(
-      `${process.env.HEALTH_RECORD_API_URL!}/api/patients?api-version=${process
-        .env.HEALTH_RECORD_API_VERSION!}`,
+      `${process.env.HEALTH_RECORD_API_URL!}/patients?api-version=${process.env
+        .HEALTH_RECORD_API_VERSION!}`,
       {
         firstName,
         lastName,
@@ -51,8 +51,8 @@ export async function getPatientById(patientId: string): Promise<Patient> {
   const data = await axiosInterceptorInstance
     .get(
       `${process.env
-        .HEALTH_RECORD_API_URL!}/api/patients/${patientId}?api-version=${process
-        .env.HEALTH_RECORD_API_VERSION!}`
+        .HEALTH_RECORD_API_URL!}/patients/${patientId}?api-version=${process.env
+        .HEALTH_RECORD_API_VERSION!}`
     )
     .then((res) => res.data)
     .catch((err) => console.error(err));
@@ -79,8 +79,8 @@ export async function updatePatient(values: z.infer<typeof PatientSchema>) {
 
   const res = await axiosInterceptorInstance
     .put(
-      `${process.env.HEALTH_RECORD_API_URL!}/api/patients?api-version=${process
-        .env.HEALTH_RECORD_API_VERSION!}`,
+      `${process.env.HEALTH_RECORD_API_URL!}/patients?api-version=${process.env
+        .HEALTH_RECORD_API_VERSION!}`,
       {
         id,
         firstName,
@@ -108,8 +108,8 @@ export async function deletePatient(patientId: string) {
   try {
     const res = await axiosInterceptorInstance.delete(
       `${process.env
-        .HEALTH_RECORD_API_URL!}/api/patients/${patientId}?api-version=${process
-        .env.HEALTH_RECORD_API_VERSION!}`
+        .HEALTH_RECORD_API_URL!}/patients/${patientId}?api-version=${process.env
+        .HEALTH_RECORD_API_VERSION!}`
     );
 
     if (res.status === 204) {
@@ -131,7 +131,7 @@ export async function getAllPatients(): Promise<PaginatedItems<Patient>> {
   const patients = await axiosInterceptorInstance
     .get(
       `${process.env
-        .HEALTH_RECORD_API_URL!}/api/patients/all?PageSize=10&PageIndex=0&api-version=${process
+        .HEALTH_RECORD_API_URL!}/patients/all?PageSize=10&PageIndex=0&api-version=${process
         .env.HEALTH_RECORD_API_VERSION!}`
     )
     .then((res) => res.data)

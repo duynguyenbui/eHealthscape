@@ -37,6 +37,7 @@ import { useEffect, useState } from "react";
 import { getPatientById, updatePatient } from "@/actions/patients";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { BackButton } from "@/components/back-button";
 
 const UpdatePatientPage = ({ params }: { params: { patientId: string } }) => {
   const router = useRouter();
@@ -86,6 +87,7 @@ const UpdatePatientPage = ({ params }: { params: { patientId: string } }) => {
 
       if (data?.success) {
         form.reset();
+        router.refresh();
         router.push("/patients");
         toast.success(data?.success);
       }
@@ -94,6 +96,7 @@ const UpdatePatientPage = ({ params }: { params: { patientId: string } }) => {
 
   return (
     <div className="sm:p-10 md:ml-72 md:mr-72">
+      <BackButton className="mb-2 -mt-3 -ml-2" />
       <h1 className="font-bold text-3xl mb-2 text-blue-600">Update Patient</h1>
 
       <Form {...form}>

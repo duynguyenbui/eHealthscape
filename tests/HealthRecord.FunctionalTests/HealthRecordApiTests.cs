@@ -17,13 +17,13 @@ public class HealthRecordApiTests : IClassFixture<HealthRecordApiFixture>
     public async Task CalledHealthRecordApiV1_0_ReturnsHealthRecordApiV1_0()
     {
         // Act
-        var response = await _httpClient.GetAsync("/api/hello-world");
+        var response = await _httpClient.GetAsync("/api/testz");
 
         // Assert
         response.EnsureSuccessStatusCode();
         var body = await response.Content.ReadAsStringAsync();
 
         // Assert with "Health Record API V1.0"
-        Assert.Equal("Hello, world!", body);
+        Assert.Equal("Hello, from HealthRecord.API!", body);
     }
 }

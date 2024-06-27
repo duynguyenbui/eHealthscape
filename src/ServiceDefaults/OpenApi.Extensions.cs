@@ -1,10 +1,12 @@
 using Asp.Versioning;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace eHealthscape.ServiceDefaults;
@@ -59,7 +61,7 @@ public static partial class Extensions
             });
 
             // Add a redirect from the root of the app to the swagger endpoint
-            // app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
+            app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
         }
 
         return app;

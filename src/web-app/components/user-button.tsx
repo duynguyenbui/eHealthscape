@@ -3,7 +3,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import React from "react";
 import { Button } from "./ui/button";
-import { DoorOpen, LogOut, User2 } from "lucide-react";
+import { BookOpen, LogOut } from "lucide-react";
 
 export const UserButton = () => {
   const session = useSession();
@@ -21,7 +21,7 @@ export const UserButton = () => {
   return (
     <div className="flex gap-2 items-center">
       <Button onClick={() => signIn("id-server")} variant="premium">
-        <DoorOpen className="mr-2 h-4 w-4" /> SignIn
+        <BookOpen className="mr-2 h-4 w-4" /> SignIn
       </Button>
     </div>
   );

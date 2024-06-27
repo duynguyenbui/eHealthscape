@@ -26,8 +26,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createVitalSign } from "@/actions/vital-sign";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const CreateVitalSignModal = () => {
+  const router = useRouter();
   const modal = useModal();
 
   // 1. Define your form.
@@ -62,11 +64,13 @@ export const CreateVitalSignModal = () => {
             toast.error(res.error);
           }
         })
-        .catch((err) => toast.error("Something went wrong"));
+        .catch((err) => toast.error("Something went wrong"))
+        .finally(() => router.refresh());
     } catch (error) {
       console.log(error);
     } finally {
       modal.onClose();
+      router.refresh();
     }
   }
 

@@ -1,0 +1,13 @@
+replicaCount: 1
+
+image:
+  repository: healthrc-svc
+  tag: kubernetes
+  pullPolicy: Never
+
+service:
+  port: 8080
+
+env:
+  databaseConnection: "Host=postgres-clusterip;Port=5432;Database=HealthRecordDB;Username=postgres;Password=postgrespw"
+  redisConnection: "redis-clusterip:6379"

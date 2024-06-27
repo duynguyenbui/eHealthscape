@@ -2,23 +2,29 @@ import React from "react";
 import { DataTable } from "../../components/data-table";
 import { columns } from "../../components/patient-columns";
 import { buttonVariants } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { ArrowBigLeft, Plus } from "lucide-react";
 import Link from "next/link";
 import { cn, formatPatients } from "@/lib/utils";
-import axiosInterceptorInstance from "@/axios-interceptor-instance";
 import { getAllPatients } from "@/actions/patients";
+import { BackButton } from "@/components/back-button";
+import { currentUser } from "@/actions/token";
+import Empty from "@/components/empty";
 
-export const revalidate = 0; // revalidate at most every hour
+export const revalidate = 0;
 
 const PatientPage = async () => {
-  // TODO: Change this to PaginatedItems
+  const user = await currentUser();
+
+  if (!user) return <Empty />;
+
   const patients = await getAllPatients();
 
   const formattedPatients = formatPatients(patients?.data || []);
 
   return (
     <div className="flex flex-col">
-      <div className="flex items-center justify-end mr-10 gap-2">
+      <div className="flex items-center justify-between mr-10 gap-2">
+        <BackButton className="ml-8" />
         <Link
           href="/patients/create"
           className={cn(buttonVariants({ variant: "premium" }))}

@@ -16,7 +16,7 @@ public static partial class Extensions
     public static IHostApplicationBuilder AddServiceDefaults(this IHostApplicationBuilder builder)
     {
         builder.AddBasicServiceDefaults();
-        
+
         return builder;
     }
 
@@ -25,7 +25,7 @@ public static partial class Extensions
         // Default health checks assume the event bus and self health checks
         builder.AddDefaultHealthChecks();
         builder.ConfigureOpenTelemetry();
-        
+
         builder.Services.AddProblemDetails();
         builder.Services.AddExceptionHandler<ExceptionHandler>();
 
@@ -65,15 +65,13 @@ public static partial class Extensions
         app.MapPrometheusScrapingEndpoint();
 
         // Adding health checks endpoints to applications in non-development environments has security implications.
-        if (app.Environment.IsDevelopment())
-        {
-            // All health checks must pass for app to be considered ready to accept traffic after starting
-            app.MapHealthChecks("/health",
-                new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
-            // Only health checks tagged with the "live" tag must pass for app to be considered alive
-            app.MapHealthChecks("/alive", new HealthCheckOptions { Predicate = r => r.Tags.Contains("live") });
-        }
+        // All health checks must pass for app to be considered ready to accept traffic after starting
+        app.MapHealthChecks("/health",
+            new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
+
+        // Only health checks tagged with the "live" tag must pass for app to be considered alive
+        app.MapHealthChecks("/alive", new HealthCheckOptions { Predicate = r => r.Tags.Contains("live") });
 
         return app;
     }

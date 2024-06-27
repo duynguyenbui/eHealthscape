@@ -5,6 +5,7 @@ import VoiceInput from "./voice-input";
 import { Button } from "./ui/button";
 import { createExamination } from "@/actions/examination";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const ExaminationFormVoice = ({
   userId,
@@ -13,6 +14,7 @@ export const ExaminationFormVoice = ({
   userId: string;
   patientRecordId: string;
 }) => {
+  const router = useRouter();
   const [progressNote, setProgressNote] = useState<string>("");
   const [medicalServices, setMedicalServices] = useState<string>("");
   const [prescription, setPrescription] = useState<string>("");
@@ -41,6 +43,9 @@ export const ExaminationFormVoice = ({
         setProgressNote("");
         setMedicalServices("");
         setPrescription("");
+
+        router.push(`/healthrecords/${patientRecordId}/examinations`);
+        router.refresh();
       });
   };
 
@@ -65,7 +70,7 @@ export const ExaminationFormVoice = ({
         onChange={setPrescription}
       />
 
-      <Button type="submit" variant="premium">
+      <Button type="submit" variant="secondary">
         Submit
       </Button>
     </form>

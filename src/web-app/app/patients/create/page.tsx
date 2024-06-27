@@ -35,9 +35,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { createPatient } from "@/actions/patients";
+import { useRouter } from "next/navigation";
+import { BackButton } from "@/components/back-button";
 
 const CreatePatientPage = () => {
-  // 1. Define patient form.
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof PatientSchema>>({
     resolver: zodResolver(PatientSchema),
     defaultValues: {
@@ -52,10 +55,7 @@ const CreatePatientPage = () => {
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof PatientSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     createPatient(values).then((data) => {
       if (data?.error) {
         form.reset();
@@ -66,11 +66,14 @@ const CreatePatientPage = () => {
         form.reset();
         toast.success(data?.success);
       }
+      router.refresh();
+      router.push("/patients");
     });
   }
 
   return (
     <div className="sm:p-10 md:ml-72 md:mr-72">
+      <BackButton className="mb-2 -mt-3 -ml-2" />
       <h1 className="font-bold text-3xl mb-2 text-blue-600">
         Create a new patient
       </h1>

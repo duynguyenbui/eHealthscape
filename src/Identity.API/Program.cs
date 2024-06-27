@@ -1,6 +1,4 @@
-﻿using eHealthscape.ServiceDefaults;
-
-using Identity.API;
+﻿using Identity.API;
 using Identity.API.Data;
 
 using Serilog;
@@ -15,9 +13,8 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.AddServiceDefaults();
-
     builder.Services.AddMigration<ApplicationDbContext>();
+
     builder.Host.UseSerilog((ctx, lc) => lc
         .WriteTo.Console(
             outputTemplate:
@@ -32,7 +29,7 @@ try
 
 
     // this seeding is only for the template to bootstrap the DB and users.
-    // in production you will likely want a different approach.
+    // in production, you will likely want a different approach.
 
     using (var scope = app.Services.CreateScope())
     {

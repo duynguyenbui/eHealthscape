@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+    repository: bff-svc
+    tag: kubernetes
+    pullPolicy: IfNotPresent
+
+service:
+  port: 8080
+  targetPort: 8080
+  
+reverseProxy:
+  clusters:
+    speech:
+      destinations:
+        speechApi:
+          address: http://speech-clusterip:8080
+        healthrecordApi:
+          address: http://healthrc-clusterip:8080

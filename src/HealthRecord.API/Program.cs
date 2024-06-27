@@ -8,10 +8,8 @@ builder.AddDefaultOpenApi(withApiVersioning);
 
 var app = builder.Build();
 
+app.NewVersionedApi("HealthRecord").MapHealthRecordV1().AllowAnonymous();
 app.MapDefaultEndpoints();
 app.UseDefaultOpenApi();
-app.NewVersionedApi("HealthRecord").MapHealthRecordV1(); //.RequireAuthorization();
-
-app.MapGet("/error", context => throw new Exception());
 
 app.Run();

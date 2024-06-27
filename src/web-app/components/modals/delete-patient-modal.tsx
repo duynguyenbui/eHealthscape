@@ -37,7 +37,8 @@ export function DeletePatientModal() {
         })
         .catch((error) => {
           toast.error("An error occurred while deleting the patient.");
-        });
+        })
+        .finally(() => router.refresh());
     });
   };
 
@@ -54,7 +55,6 @@ export function DeletePatientModal() {
             patient&apos;s data from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        Hello
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={onSubmit}>Create</AlertDialogAction>

@@ -24,8 +24,10 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { createCareSheet } from "@/actions/caresheet";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const CareSheetModal = () => {
+  const router = useRouter();
   const modal = useModal();
 
   // 1. Define your form.
@@ -57,6 +59,7 @@ export const CareSheetModal = () => {
       console.log(error);
     } finally {
       modal.onClose();
+      router.refresh();
     }
   }
 

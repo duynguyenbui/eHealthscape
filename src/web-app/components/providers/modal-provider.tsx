@@ -17,9 +17,9 @@ export const ModalProvider = () => {
   }
   return (
     <>
-      <DeletePatientModal />
-      <CreateVitalSignModal />
       <CareSheetModal />
+      <CreateVitalSignModal />
+      <DeletePatientModal />
     </>
   );
 };

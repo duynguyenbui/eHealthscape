@@ -34,12 +34,13 @@ public class AnalysisSpeechService : IAnalysisSpeechService
             return "AI Service is not enabled";
         }
 
-        List<Message> messages = new List<Message>
-        {
+        List<Message> messages =
+        [
             Message.Create(ChatRoleType.System,
                 "You are an intelligent assistant. You always provide well-reasoned answers that are both correct and helpful. You work in the medical industry."),
+
             Message.Create(ChatRoleType.User, text)
-        };
+        ];
 
         var response = await _aiService.Chat.Get(messages, o =>
         {
