@@ -1,21 +1,6 @@
 version: '3'
 
 tasks:
-  # Docker Environment
-  build:
-    cmds:
-      - docker build -t duynguyenbui/web-app:latest -f src/web-app/Dockerfile .
-      - docker build -t duynguyenbui/speech-svc:latest -f src/SpeechRecognition.API/Dockerfile .
-      - docker build -t duynguyenbui/healthrc-svc:latest -f src/HealthRecord.API/Dockerfile .
-      - docker build -t duynguyenbui/bff-svc:latest -f src/BFF/Dockerfile .
-      - docker build -t duynguyenbui/identity-svc:latest -f src/Identity.API/Dockerfile .
-    desc: "Build all docker images"
-  up:
-    cmd: docker-compose up -d
-    desc: "Run docker compose version for eHealthscape"
-  down:
-    cmd: docker-compose down
-    desc: "Release docker resources"
   # Kubernetes
   create-namespace:
     cmds:
